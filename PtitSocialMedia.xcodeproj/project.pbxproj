@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60EFEA75A07B97D97A15ADDA /* Pods_PtitSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */; };
 		A14BB9902D96449F001B8B79 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB98F2D96449F001B8B79 /* ExploreViewController.swift */; };
 		A14BB9922D9644AF001B8B79 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9912D9644AF001B8B79 /* CameraViewController.swift */; };
 		A14BB9942D9644C5001B8B79 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9932D9644C5001B8B79 /* NotificationsViewController.swift */; };
@@ -21,6 +22,7 @@
 		A14BB9A92D96467F001B8B79 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9A82D96467E001B8B79 /* SearchResultViewController.swift */; };
 		A14BB9AB2D9646A8001B8B79 /* PostEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */; };
 		A14BB9AD2D9646D3001B8B79 /* PublishPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9AC2D9646D3001B8B79 /* PublishPostViewController.swift */; };
+		A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */; };
 		A16557042D95B6CE004C05FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557032D95B6CE004C05FA /* AppDelegate.swift */; };
 		A16557062D95B6CE004C05FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557052D95B6CE004C05FA /* SceneDelegate.swift */; };
 		A16557082D95B6CE004C05FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557072D95B6CE004C05FA /* HomeViewController.swift */; };
@@ -30,6 +32,9 @@
 		A165571B2D95B6D1004C05FA /* PtitSocialMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A165571A2D95B6D1004C05FA /* PtitSocialMediaTests.swift */; };
 		A16557252D95B6D1004C05FA /* PtitSocialMediaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557242D95B6D1004C05FA /* PtitSocialMediaUITests.swift */; };
 		A16557272D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557262D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift */; };
+		A191ACAC2D96919100E004E0 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAB2D96919100E004E0 /* DatabaseManager.swift */; };
+		A191ACAE2D96938900E004E0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAD2D96938900E004E0 /* AuthManager.swift */; };
+		A191ACB02D96941800E004E0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAF2D96941800E004E0 /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.debug.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
+		7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.release.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
 		A14BB98F2D96449F001B8B79 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		A14BB9912D9644AF001B8B79 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		A14BB9932D9644C5001B8B79 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +71,7 @@
 		A14BB9A82D96467E001B8B79 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorViewController.swift; sourceTree = "<group>"; };
 		A14BB9AC2D9646D3001B8B79 /* PublishPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishPostViewController.swift; sourceTree = "<group>"; };
+		A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A16557002D95B6CE004C05FA /* PtitSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PtitSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16557032D95B6CE004C05FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A16557052D95B6CE004C05FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +85,10 @@
 		A16557202D95B6D1004C05FA /* PtitSocialMediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PtitSocialMediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16557242D95B6D1004C05FA /* PtitSocialMediaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PtitSocialMediaUITests.swift; sourceTree = "<group>"; };
 		A16557262D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PtitSocialMediaUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A191ACAB2D96919100E004E0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		A191ACAD2D96938900E004E0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		A191ACAF2D96941800E004E0 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PtitSocialMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60EFEA75A07B97D97A15ADDA /* Pods_PtitSocialMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +117,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40E3B9ABB4903FD2AA51C3CA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */,
+				7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		4D382E52891076BF341998A0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A14BB98A2D964375001B8B79 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,8 +162,12 @@
 		A14BB98D2D964397001B8B79 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */,
 				A16557032D95B6CE004C05FA /* AppDelegate.swift */,
 				A16557052D95B6CE004C05FA /* SceneDelegate.swift */,
+				A191ACAB2D96919100E004E0 /* DatabaseManager.swift */,
+				A191ACAD2D96938900E004E0 /* AuthManager.swift */,
+				A191ACAF2D96941800E004E0 /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -191,6 +225,8 @@
 				A16557192D95B6D1004C05FA /* PtitSocialMediaTests */,
 				A16557232D95B6D1004C05FA /* PtitSocialMediaUITests */,
 				A16557012D95B6CE004C05FA /* Products */,
+				40E3B9ABB4903FD2AA51C3CA /* Pods */,
+				4D382E52891076BF341998A0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,9 +276,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A165572A2D95B6D1004C05FA /* Build configuration list for PBXNativeTarget "PtitSocialMedia" */;
 			buildPhases = (
+				09AFDFD2305191D2BAA84D61 /* [CP] Check Pods Manifest.lock */,
 				A16556FC2D95B6CE004C05FA /* Sources */,
 				A16556FD2D95B6CE004C05FA /* Frameworks */,
 				A16556FE2D95B6CE004C05FA /* Resources */,
+				BC7B0F8237A8306D8196F3B6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -338,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A16557102D95B6D0004C05FA /* LaunchScreen.storyboard in Resources */,
+				A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */,
 				A165570D2D95B6D0004C05FA /* Assets.xcassets in Resources */,
 				A165570B2D95B6CE004C05FA /* Main.storyboard in Resources */,
 			);
@@ -359,6 +398,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		09AFDFD2305191D2BAA84D61 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PtitSocialMedia-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC7B0F8237A8306D8196F3B6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A16556FC2D95B6CE004C05FA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -371,12 +452,15 @@
 				A16557082D95B6CE004C05FA /* HomeViewController.swift in Sources */,
 				A14BB99D2D96455B001B8B79 /* RegistrationViewController.swift in Sources */,
 				A14BB9AB2D9646A8001B8B79 /* PostEditorViewController.swift in Sources */,
+				A191ACB02D96941800E004E0 /* StorageManager.swift in Sources */,
 				A14BB9942D9644C5001B8B79 /* NotificationsViewController.swift in Sources */,
+				A191ACAC2D96919100E004E0 /* DatabaseManager.swift in Sources */,
 				A14BB99B2D964541001B8B79 /* LoginViewController.swift in Sources */,
 				A14BB9A92D96467F001B8B79 /* SearchResultViewController.swift in Sources */,
 				A14BB9962D9644E1001B8B79 /* ProfileViewController.swift in Sources */,
 				A14BB9A72D9645E1001B8B79 /* SearchViewController.swift in Sources */,
 				A16557042D95B6CE004C05FA /* AppDelegate.swift in Sources */,
+				A191ACAE2D96938900E004E0 /* AuthManager.swift in Sources */,
 				A16557062D95B6CE004C05FA /* SceneDelegate.swift in Sources */,
 				A14BB99F2D96457D001B8B79 /* PostViewController.swift in Sources */,
 				A14BB9A52D9645CB001B8B79 /* ListViewController.swift in Sources */,
@@ -557,11 +641,13 @@
 		};
 		A165572B2D95B6D1004C05FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PtitSocialMedia/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -574,6 +660,81 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Appirater\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"FBLPromises\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseAppCheckInterop\"",
+					"-framework",
+					"\"FirebaseAuth\"",
+					"-framework",
+					"\"FirebaseAuthInterop\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreExtension\"",
+					"-framework",
+					"\"FirebaseCoreInternal\"",
+					"-framework",
+					"\"FirebaseCrashlytics\"",
+					"-framework",
+					"\"FirebaseDatabase\"",
+					"-framework",
+					"\"FirebaseInstallations\"",
+					"-framework",
+					"\"FirebaseRemoteConfigInterop\"",
+					"-framework",
+					"\"FirebaseSessions\"",
+					"-framework",
+					"\"FirebaseSharedSwift\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleAppMeasurementIdentitySupport\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"Promises\"",
+					"-framework",
+					"\"RecaptchaInterop\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"leveldb\"",
+					"-framework",
+					"\"nanopb\"",
+					"-weak_framework",
+					"\"StoreKit\"",
+					"\"-Wl,-no_warn_duplicate_libraries\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.an.PtitSocialMedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -584,11 +745,13 @@
 		};
 		A165572C2D95B6D1004C05FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PtitSocialMedia/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -601,6 +764,81 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Appirater\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"FBLPromises\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseAppCheckInterop\"",
+					"-framework",
+					"\"FirebaseAuth\"",
+					"-framework",
+					"\"FirebaseAuthInterop\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreExtension\"",
+					"-framework",
+					"\"FirebaseCoreInternal\"",
+					"-framework",
+					"\"FirebaseCrashlytics\"",
+					"-framework",
+					"\"FirebaseDatabase\"",
+					"-framework",
+					"\"FirebaseInstallations\"",
+					"-framework",
+					"\"FirebaseRemoteConfigInterop\"",
+					"-framework",
+					"\"FirebaseSessions\"",
+					"-framework",
+					"\"FirebaseSharedSwift\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleAppMeasurementIdentitySupport\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"Promises\"",
+					"-framework",
+					"\"RecaptchaInterop\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"leveldb\"",
+					"-framework",
+					"\"nanopb\"",
+					"-weak_framework",
+					"\"StoreKit\"",
+					"\"-Wl,-no_warn_duplicate_libraries\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.an.PtitSocialMedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
