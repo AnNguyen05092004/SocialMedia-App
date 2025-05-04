@@ -8,6 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		60EFEA75A07B97D97A15ADDA /* Pods_PtitSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */; };
+		A124201A2DACBC96009FFB6F /* FeedPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */; };
+		A124201B2DACBC96009FFB6F /* FeedPostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */; };
+		A124201F2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */; };
+		A12420212DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */; };
+		A12420232DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */; };
+		A127BCAE2DBBE9D500847A63 /* UserFollowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127BCAD2DBBE9D500847A63 /* UserFollowTableViewCell.swift */; };
+		A127BCB02DBDD51200847A63 /* NoNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127BCAF2DBDD51200847A63 /* NoNotificationsView.swift */; };
+		A127BCB32DBDDF2A00847A63 /* NotificationFollowEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127BCB22DBDDF2A00847A63 /* NotificationFollowEventTableViewCell.swift */; };
+		A127BCB52DBDDF4300847A63 /* NotificationLikeEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127BCB42DBDDF4300847A63 /* NotificationLikeEventTableViewCell.swift */; };
+		A13147AE2DB162610003FE72 /* FormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13147AD2DB162610003FE72 /* FormTableViewCell.swift */; };
+		A13147B32DB3FF440003FE72 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13147B22DB3FF440003FE72 /* PhotoCollectionViewCell.swift */; };
+		A13147B52DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13147B42DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift */; };
+		A13147B72DB400720003FE72 /* ProfileTabsCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13147B62DB400720003FE72 /* ProfileTabsCollectionReusableView.swift */; };
+		A13147BB2DB4A1440003FE72 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13147BA2DB4A1440003FE72 /* PostModel.swift */; };
 		A14BB9902D96449F001B8B79 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB98F2D96449F001B8B79 /* ExploreViewController.swift */; };
 		A14BB9922D9644AF001B8B79 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9912D9644AF001B8B79 /* CameraViewController.swift */; };
 		A14BB9942D9644C5001B8B79 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9932D9644C5001B8B79 /* NotificationsViewController.swift */; };
@@ -35,6 +49,7 @@
 		A191ACAC2D96919100E004E0 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAB2D96919100E004E0 /* DatabaseManager.swift */; };
 		A191ACAE2D96938900E004E0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAD2D96938900E004E0 /* AuthManager.swift */; };
 		A191ACB02D96941800E004E0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAF2D96941800E004E0 /* StorageManager.swift */; };
+		A191ACB22D96A52100E004E0 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACB12D96A52100E004E0 /* Extentions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +72,20 @@
 /* Begin PBXFileReference section */
 		3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.debug.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 		7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.release.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
+		A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostTableViewCell.swift; sourceTree = "<group>"; };
+		A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedPostTableViewCell.xib; sourceTree = "<group>"; };
+		A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostActionsTableViewCell.swift; sourceTree = "<group>"; };
+		A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostGeneralTableViewCell.swift; sourceTree = "<group>"; };
+		A127BCAD2DBBE9D500847A63 /* UserFollowTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowTableViewCell.swift; sourceTree = "<group>"; };
+		A127BCAF2DBDD51200847A63 /* NoNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoNotificationsView.swift; sourceTree = "<group>"; };
+		A127BCB22DBDDF2A00847A63 /* NotificationFollowEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFollowEventTableViewCell.swift; sourceTree = "<group>"; };
+		A127BCB42DBDDF4300847A63 /* NotificationLikeEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLikeEventTableViewCell.swift; sourceTree = "<group>"; };
+		A13147AD2DB162610003FE72 /* FormTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTableViewCell.swift; sourceTree = "<group>"; };
+		A13147B22DB3FF440003FE72 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		A13147B42DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		A13147B62DB400720003FE72 /* ProfileTabsCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabsCollectionReusableView.swift; sourceTree = "<group>"; };
+		A13147BA2DB4A1440003FE72 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		A14BB98F2D96449F001B8B79 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		A14BB9912D9644AF001B8B79 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		A14BB9932D9644C5001B8B79 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +117,7 @@
 		A191ACAB2D96919100E004E0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A191ACAD2D96938900E004E0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		A191ACAF2D96941800E004E0 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		A191ACB12D96A52100E004E0 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PtitSocialMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -134,9 +164,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A12420172DACBC5E009FFB6F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB1E242DC4D23400F492AC /* Hom Feed & Post */,
+				A127BCB12DBDDEE700847A63 /* Notifications */,
+				A13147AD2DB162610003FE72 /* FormTableViewCell.swift */,
+				A13147B22DB3FF440003FE72 /* PhotoCollectionViewCell.swift */,
+				A127BCAD2DBBE9D500847A63 /* UserFollowTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A127BCB12DBDDEE700847A63 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				A127BCB22DBDDF2A00847A63 /* NotificationFollowEventTableViewCell.swift */,
+				A127BCB42DBDDF4300847A63 /* NotificationLikeEventTableViewCell.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		A13147AF2DB3FE8D0003FE72 /* CollectionView Headers */ = {
+			isa = PBXGroup;
+			children = (
+				A13147B42DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift */,
+				A13147B62DB400720003FE72 /* ProfileTabsCollectionReusableView.swift */,
+			);
+			path = "CollectionView Headers";
+			sourceTree = "<group>";
+		};
 		A14BB98A2D964375001B8B79 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A13147BA2DB4A1440003FE72 /* PostModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -144,8 +205,11 @@
 		A14BB98B2D964380001B8B79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A13147AF2DB3FE8D0003FE72 /* CollectionView Headers */,
+				A12420172DACBC5E009FFB6F /* Cells */,
 				A165570C2D95B6D0004C05FA /* Assets.xcassets */,
 				A14BB98E2D9643DA001B8B79 /* Storyboards */,
+				A127BCAF2DBDD51200847A63 /* NoNotificationsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -168,6 +232,7 @@
 				A191ACAB2D96919100E004E0 /* DatabaseManager.swift */,
 				A191ACAD2D96938900E004E0 /* AuthManager.swift */,
 				A191ACAF2D96941800E004E0 /* StorageManager.swift */,
+				A191ACB12D96A52100E004E0 /* Extentions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -267,6 +332,18 @@
 				A16557262D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift */,
 			);
 			path = PtitSocialMediaUITests;
+			sourceTree = "<group>";
+		};
+		A1DB1E242DC4D23400F492AC /* Hom Feed & Post */ = {
+			isa = PBXGroup;
+			children = (
+				A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */,
+				A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */,
+				A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */,
+				A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */,
+				A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */,
+			);
+			path = "Hom Feed & Post";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,6 +452,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A124201B2DACBC96009FFB6F /* FeedPostTableViewCell.xib in Resources */,
 				A16557102D95B6D0004C05FA /* LaunchScreen.storyboard in Resources */,
 				A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */,
 				A165570D2D95B6D0004C05FA /* Assets.xcassets in Resources */,
@@ -446,25 +524,39 @@
 			buildActionMask = 2147483647;
 			files = (
 				A14BB9A12D96459C001B8B79 /* EditProfileViewController.swift in Sources */,
+				A13147BB2DB4A1440003FE72 /* PostModel.swift in Sources */,
 				A14BB9902D96449F001B8B79 /* ExploreViewController.swift in Sources */,
 				A14BB9AD2D9646D3001B8B79 /* PublishPostViewController.swift in Sources */,
 				A14BB9922D9644AF001B8B79 /* CameraViewController.swift in Sources */,
 				A16557082D95B6CE004C05FA /* HomeViewController.swift in Sources */,
+				A127BCB02DBDD51200847A63 /* NoNotificationsView.swift in Sources */,
 				A14BB99D2D96455B001B8B79 /* RegistrationViewController.swift in Sources */,
+				A127BCB32DBDDF2A00847A63 /* NotificationFollowEventTableViewCell.swift in Sources */,
 				A14BB9AB2D9646A8001B8B79 /* PostEditorViewController.swift in Sources */,
 				A191ACB02D96941800E004E0 /* StorageManager.swift in Sources */,
+				A127BCAE2DBBE9D500847A63 /* UserFollowTableViewCell.swift in Sources */,
 				A14BB9942D9644C5001B8B79 /* NotificationsViewController.swift in Sources */,
+				A13147AE2DB162610003FE72 /* FormTableViewCell.swift in Sources */,
+				A124201A2DACBC96009FFB6F /* FeedPostTableViewCell.swift in Sources */,
+				A13147B72DB400720003FE72 /* ProfileTabsCollectionReusableView.swift in Sources */,
 				A191ACAC2D96919100E004E0 /* DatabaseManager.swift in Sources */,
 				A14BB99B2D964541001B8B79 /* LoginViewController.swift in Sources */,
 				A14BB9A92D96467F001B8B79 /* SearchResultViewController.swift in Sources */,
+				A13147B32DB3FF440003FE72 /* PhotoCollectionViewCell.swift in Sources */,
 				A14BB9962D9644E1001B8B79 /* ProfileViewController.swift in Sources */,
 				A14BB9A72D9645E1001B8B79 /* SearchViewController.swift in Sources */,
+				A12420212DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift in Sources */,
 				A16557042D95B6CE004C05FA /* AppDelegate.swift in Sources */,
+				A127BCB52DBDDF4300847A63 /* NotificationLikeEventTableViewCell.swift in Sources */,
 				A191ACAE2D96938900E004E0 /* AuthManager.swift in Sources */,
+				A13147B52DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift in Sources */,
 				A16557062D95B6CE004C05FA /* SceneDelegate.swift in Sources */,
+				A12420232DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift in Sources */,
 				A14BB99F2D96457D001B8B79 /* PostViewController.swift in Sources */,
 				A14BB9A52D9645CB001B8B79 /* ListViewController.swift in Sources */,
 				A14BB9A32D9645B0001B8B79 /* SettingsViewController.swift in Sources */,
+				A191ACB22D96A52100E004E0 /* Extentions.swift in Sources */,
+				A124201F2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,8 +745,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -757,8 +850,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
