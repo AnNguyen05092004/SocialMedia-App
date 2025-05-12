@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 enum UserNotificationType {
     case like(post: UserPost)
@@ -62,32 +64,131 @@ class NotificationsViewController: UIViewController {
         spinner.center = view.center
     }
     
+//    private func fetchNotifications() {
+//        for x in 0...100 {
+//            let user = User(username: "@an",
+//                            bio: "Ptit student",
+//                            name: (first: "Nguyen", last: "An"),
+//                            profilePhoto: URL(string: "https://www.google.com/")!,
+//                            birthDate: Date(),
+//                            gender: .male,
+//                            counts: UserCount(followers: 1, following: 2, posts: 2),
+//                            joinDate: Date())
+//            let post = UserPost(identifier: "",
+//                                postType: .photo,
+//                                thumbnailImage: URL(string: "https://www.google.com/")!,
+//                                postURL: URL(string: "https://www.google.com/")!,
+//                                caption: "This post is hardcode",
+//                                likeCount: [],
+//                                comments: [],
+//                                createdData: Date(),
+//                                taggedUsers: [], 
+//                                owner: user)
+//            let model = UserNotification(type: x%2==0 ?.like(post: post) : .follow(state: .following),
+//                                         text: "An like your post",
+//                                         user: user)
+//            models.append(model)
+//        }
+//    }
+    
     private func fetchNotifications() {
-        for x in 0...100 {
-            let user = User(username: "@an",
-                            bio: "Ptit student",
-                            name: (first: "Nguyen", last: "An"),
-                            profilePhoto: URL(string: "https://www.google.com/")!,
-                            birthDate: Date(),
-                            gender: .male,
-                            counts: UserCount(followers: 1, following: 2, posts: 2),
-                            joinDate: Date())
-            let post = UserPost(identifier: "",
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+
+        let db = Firestore.firestore()
+        db.collection("notifications")
+            .whereField("toUserId", isEqualTo: currentUserID)
+            .order(by: "timestamp", descending: true)
+            .getDocuments { [weak self] snapshot, error in
+                guard let self = self,
+                      let documents = snapshot?.documents, error == nil else {
+                    return
+                }
+
+                self.models.removeAll()
+                let group = DispatchGroup()
+
+                for doc in documents {
+                    let data = doc.data()
+                    guard let type = data["type"] as? String,
+                          let fromUserId = data["fromUserId"] as? String,
+                          let postId = data["postId"] as? String else {
+                        continue
+                    }
+
+                    group.enter()
+                    self.fetchUser(uid: fromUserId) { user in
+                        self.fetchPost(postId: postId) { post in
+                            let model = UserNotification(
+                                type: .like(post: post),
+                                text: "\(user.username) liked your post",
+                                user: user
+                            )
+                            self.models.append(model)
+                            group.leave()
+                        }
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    self.tableView.reloadData()
+                    if self.models.isEmpty {
+                        self.addNoNotificationsView()
+                    }
+                }
+            }
+    }
+
+
+    private func fetchUser(uid: String, completion: @escaping (User) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            guard let data = snapshot?.data(), error == nil else {
+                print("Failed to fetch user info")
+                return
+            }
+
+            let user = User(
+                userId: uid,
+                username: data["username"] as? String ?? "",
+                bio: data["bio"] as? String ?? "",
+                name: data["name"] as? String ?? "",
+                profilePhoto: URL(string: data["profile_photo_url"] as? String ?? ""),
+                birthDate: Date(),
+                gender: .other,
+                counts: UserCount(followers: 0, following: 0, posts: 0),
+                joinDate: Date()
+            )
+            completion(user)
+        }
+    }
+
+
+    private func fetchPost(postId: String, completion: @escaping (UserPost) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("posts").document(postId).getDocument { snapshot, error in
+            guard let data = snapshot?.data(),
+                  let username = data["username"] as? String,
+                  let postURLStr = data["post_url"] as? String,
+                  let postURL = URL(string: postURLStr) else {
+                return
+            }
+
+            let dummyUser = User(userId: Auth.auth().currentUser?.uid ?? "", username: username, bio: "", name: (""), profilePhoto: nil, birthDate: Date(), gender: .other, counts: UserCount(followers: 0, following: 0, posts: 0), joinDate: Date())
+
+            let post = UserPost(identifier: postId,
                                 postType: .photo,
-                                thumbnailImage: URL(string: "https://www.google.com/")!,
-                                postURL: URL(string: "https://www.google.com/")!,
-                                caption: "This post is hardcode",
+                                thumbnailImage: postURL,
+                                postURL: postURL,
+                                caption: data["caption"] as? String,
                                 likeCount: [],
                                 comments: [],
                                 createdData: Date(),
-                                taggedUsers: [], 
-                                owner: user)
-            let model = UserNotification(type: x%2==0 ?.like(post: post) : .follow(state: .following),
-                                         text: "An like your post",
-                                         user: user)
-            models.append(model)
+                                taggedUsers: [],
+                                owner: dummyUser)
+            completion(post)
         }
     }
+
     
     private func addNoNotificationsView() {
         tableView.isHidden = true

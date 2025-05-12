@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		60EFEA75A07B97D97A15ADDA /* Pods_PtitSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83B9F43CD18B1D4B8D58066 /* Pods_PtitSocialMedia.framework */; };
 		A124201A2DACBC96009FFB6F /* FeedPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */; };
-		A124201B2DACBC96009FFB6F /* FeedPostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */; };
 		A124201F2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */; };
 		A12420212DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */; };
 		A12420232DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */; };
@@ -35,7 +34,6 @@
 		A14BB9A72D9645E1001B8B79 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */; };
 		A14BB9A92D96467F001B8B79 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9A82D96467E001B8B79 /* SearchResultViewController.swift */; };
 		A14BB9AB2D9646A8001B8B79 /* PostEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */; };
-		A14BB9AD2D9646D3001B8B79 /* PublishPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9AC2D9646D3001B8B79 /* PublishPostViewController.swift */; };
 		A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */; };
 		A16557042D95B6CE004C05FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557032D95B6CE004C05FA /* AppDelegate.swift */; };
 		A16557062D95B6CE004C05FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557052D95B6CE004C05FA /* SceneDelegate.swift */; };
@@ -46,6 +44,7 @@
 		A165571B2D95B6D1004C05FA /* PtitSocialMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A165571A2D95B6D1004C05FA /* PtitSocialMediaTests.swift */; };
 		A16557252D95B6D1004C05FA /* PtitSocialMediaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557242D95B6D1004C05FA /* PtitSocialMediaUITests.swift */; };
 		A16557272D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557262D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift */; };
+		A177F3472DCD101C001A6F98 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A177F3462DCD101C001A6F98 /* CommentViewController.swift */; };
 		A191ACAC2D96919100E004E0 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAB2D96919100E004E0 /* DatabaseManager.swift */; };
 		A191ACAE2D96938900E004E0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAD2D96938900E004E0 /* AuthManager.swift */; };
 		A191ACB02D96941800E004E0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A191ACAF2D96941800E004E0 /* StorageManager.swift */; };
@@ -73,7 +72,6 @@
 		3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.debug.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 		7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.release.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
 		A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostTableViewCell.swift; sourceTree = "<group>"; };
-		A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedPostTableViewCell.xib; sourceTree = "<group>"; };
 		A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostActionsTableViewCell.swift; sourceTree = "<group>"; };
 		A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostGeneralTableViewCell.swift; sourceTree = "<group>"; };
@@ -99,7 +97,6 @@
 		A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A14BB9A82D96467E001B8B79 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorViewController.swift; sourceTree = "<group>"; };
-		A14BB9AC2D9646D3001B8B79 /* PublishPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishPostViewController.swift; sourceTree = "<group>"; };
 		A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A16557002D95B6CE004C05FA /* PtitSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PtitSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16557032D95B6CE004C05FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +111,7 @@
 		A16557202D95B6D1004C05FA /* PtitSocialMediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PtitSocialMediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16557242D95B6D1004C05FA /* PtitSocialMediaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PtitSocialMediaUITests.swift; sourceTree = "<group>"; };
 		A16557262D95B6D1004C05FA /* PtitSocialMediaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PtitSocialMediaUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A177F3462DCD101C001A6F98 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		A191ACAB2D96919100E004E0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A191ACAD2D96938900E004E0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		A191ACAF2D96941800E004E0 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -269,7 +267,7 @@
 				A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */,
 				A14BB9A82D96467E001B8B79 /* SearchResultViewController.swift */,
 				A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */,
-				A14BB9AC2D9646D3001B8B79 /* PublishPostViewController.swift */,
+				A177F3462DCD101C001A6F98 /* CommentViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -338,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */,
-				A12420192DACBC96009FFB6F /* FeedPostTableViewCell.xib */,
 				A124201E2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift */,
 				A12420202DACC0E2009FFB6F /* FeedPostActionsTableViewCell.swift */,
 				A12420222DACC0FB009FFB6F /* FeedPostGeneralTableViewCell.swift */,
@@ -452,7 +449,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A124201B2DACBC96009FFB6F /* FeedPostTableViewCell.xib in Resources */,
 				A16557102D95B6D0004C05FA /* LaunchScreen.storyboard in Resources */,
 				A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */,
 				A165570D2D95B6D0004C05FA /* Assets.xcassets in Resources */,
@@ -523,10 +519,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A177F3472DCD101C001A6F98 /* CommentViewController.swift in Sources */,
 				A14BB9A12D96459C001B8B79 /* EditProfileViewController.swift in Sources */,
 				A13147BB2DB4A1440003FE72 /* PostModel.swift in Sources */,
 				A14BB9902D96449F001B8B79 /* ExploreViewController.swift in Sources */,
-				A14BB9AD2D9646D3001B8B79 /* PublishPostViewController.swift in Sources */,
 				A14BB9922D9644AF001B8B79 /* CameraViewController.swift in Sources */,
 				A16557082D95B6CE004C05FA /* HomeViewController.swift in Sources */,
 				A127BCB02DBDD51200847A63 /* NoNotificationsView.swift in Sources */,

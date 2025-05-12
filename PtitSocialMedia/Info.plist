@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Chúng tôi cần truy cập thư viện ảnh để bạn chọn ảnh bài đăng</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Chúng tôi cần truy cập camera để bạn có thể chụp ảnh bài đăng</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

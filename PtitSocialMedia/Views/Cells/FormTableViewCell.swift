@@ -37,7 +37,17 @@ class FormTableViewCell: UITableViewCell {
         contentView.addSubview(field)
         field.delegate = self
         selectionStyle = .none
+        
+        field.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
+
     }
+    @objc private func didChangeTextField(_ textField: UITextField) {
+        model?.value = textField.text
+        if let model = model {
+            delegate?.formTableViewCell(self, didUpdatedField: model)
+        }
+    }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

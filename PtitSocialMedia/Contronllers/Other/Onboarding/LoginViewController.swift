@@ -165,43 +165,41 @@ class LoginViewController: UIViewController {
     
     
     @objc private func didTapLoginButton() {
-        usernameEmailField.resignFirstResponder()
-        passwordField.resignFirstResponder()
-        
+        view.endEditing(true)
+
         guard let usernameEmail = usernameEmailField.text, !usernameEmail.isEmpty,
-              let password = passwordField.text, !password.isEmpty, password.count >= 8 else{
+              let password = passwordField.text, !password.isEmpty, password.count >= 8 else {
+            showAlert(title: "Missing Info", message: "Please enter your email/username and password (≥ 8 characters).")
             return
         }
-        
-        // Login function
+
         var username: String?
         var email: String?
-        
-        if usernameEmail.contains("@"), usernameEmail.contains("."){
-            // Email
+
+        if usernameEmail.contains("@"), usernameEmail.contains(".") {
             email = usernameEmail
         } else {
-            // username
             username = usernameEmail
         }
-        
+
         AuthManager.shared.loginUser(userName: username, email: email, password: password) { success in
             DispatchQueue.main.async {
                 if success {
-                    // login success
-                    self.dismiss(animated: true, completion: nil)
-//                    let vc = HomeViewController()
-//                    self.present(vc, animated: true)
-                    
+                    self.dismiss(animated: true)
                 } else {
-                    // error ocur
-                    let alert = UIAlertController(title: "Login error", message: "Unable to login", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-                    self.present(alert, animated: true)
+                    self.showAlert(title: "Login Failed", message: "Please check your credentials and try again.")
                 }
             }
         }
     }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+    
     @objc private func didTapTermsButton() {
         guard let url = URL(string: "https://cds.ptit.edu.vn/terms-of-service") else {
             return

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class ExploreViewController: UIViewController {
     
@@ -52,6 +54,8 @@ class ExploreViewController: UIViewController {
         view.addSubview(dimmedView)
         
         searchBar.delegate = self
+        
+        fetchExplorePosts()
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,6 +64,98 @@ class ExploreViewController: UIViewController {
         dimmedView.frame = view.bounds
         
     }
+    private func fetchExplorePosts() {
+        let db = Firestore.firestore()
+        db.collection("posts").order(by: "timestamp", descending: true).getDocuments { [weak self] snapshot, error in
+            guard let documents = snapshot?.documents, error == nil else {
+                print("Failed to fetch explore posts: \(error?.localizedDescription ?? "")")
+                return
+            }
+
+            var newModels: [UserPost] = []
+            let group = DispatchGroup()
+
+            for doc in documents {
+                let data = doc.data()
+                guard let postURLStr = data["post_url"] as? String,
+                      let url = URL(string: postURLStr),
+                      let username = data["username"] as? String else {
+                    continue
+                }
+
+                let dummyUser = User(
+                    userId: Auth.auth().currentUser?.uid ?? "",
+                    username: username,
+                    bio: "",
+                    name: (""),
+                    profilePhoto: nil,
+                    birthDate: Date(),
+                    gender: .other,
+                    counts: UserCount(followers: 0, following: 0, posts: 0),
+                    joinDate: Date()
+                )
+
+                let postID = doc.documentID
+                let postRef = db.collection("posts").document(postID)
+
+                group.enter()
+
+                var likes: [PostLike] = []
+                var comments: [PostComment] = []
+
+                // 1. Fetch likes
+                postRef.collection("likes").getDocuments { likeSnapshot, _ in
+                    likes = likeSnapshot?.documents.compactMap { likeDoc in
+                        let data = likeDoc.data()
+                        guard let userId = data["userId"] as? String else { return nil }
+                        return PostLike(userId: userId, postIdentifier: postID)
+                    } ?? []
+
+                    // 2. Fetch comments
+                    postRef.collection("comments").getDocuments { commentSnapshot, _ in
+                        comments = commentSnapshot?.documents.compactMap { commentDoc in
+                            let data = commentDoc.data()
+                            guard let username = data["username"] as? String,
+                                  let text = data["text"] as? String,
+                                  let timestamp = data["created_at"] as? Timestamp else {
+                                return nil
+                            }
+                            return PostComment(
+                                identifier: commentDoc.documentID,
+                                username: username,
+                                text: text,
+                                createdDate: timestamp.dateValue(),
+                                like: []
+                            )
+                        } ?? []
+
+                        let post = UserPost(
+                            identifier: postID,
+                            postType: .photo,
+                            thumbnailImage: url,
+                            postURL: url,
+                            caption: data["caption"] as? String,
+                            likeCount: likes,
+                            comments: comments,
+                            createdData: Date(),
+                            taggedUsers: [],
+                            owner: dummyUser
+                        )
+
+                        newModels.append(post)
+                        group.leave()
+                    }
+                }
+            }
+
+            group.notify(queue: .main) {
+                self?.models = newModels
+                self?.collectionView?.reloadData()
+            }
+        }
+    }
+
+
 }
 
 extension ExploreViewController: UISearchBarDelegate {
@@ -88,42 +184,63 @@ extension ExploreViewController: UISearchBarDelegate {
 
 extension ExploreViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return models.count
     }
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+//            return UICollectionViewCell()
+//        }
+//        //cell.configure(with:  )
+//        cell.configure(debug: "test")
+//        return cell
+//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PhotoCollectionViewCell.identifier,
+            for: indexPath
+        ) as? PhotoCollectionViewCell else {
             return UICollectionViewCell()
         }
-        //cell.configure(with:  )
-        cell.configure(debug: "test")
+
+        let post = models[indexPath.row]
+        cell.configure(with: post.thumbnailImage)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        //let model = models[indexPath.row]
-        
-        let user = User(username: "@an",
-                        bio: "Ptit student",
-                        name: (first: "Nguyen", last: "An"),
-                        profilePhoto: URL(string: "https://www.google.com/")!,
-                        birthDate: Date(),
-                        gender: .male,
-                        counts: UserCount(followers: 1, following: 2, posts: 2),
-                        joinDate: Date())
-        let post = UserPost(identifier: "",
-                            postType: .photo,
-                            thumbnailImage: URL(string: "https://www.google.com/")!,
-                            postURL: URL(string: "https://www.google.com/")!,
-                            caption: "This post is hardcode",
-                            likeCount: [],
-                            comments: [],
-                            createdData: Date(),
-                            taggedUsers: [],
-                            owner: user)
-        
+        let post = models[indexPath.row]
         let vc = PostViewController(model: post)
-        vc.title = post.postType.rawValue
         navigationController?.pushViewController(vc, animated: true)
     }
+
+
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        collectionView.deselectItem(at: indexPath, animated: true)
+//        //let model = models[indexPath.row]
+//        
+//        let user = User(username: "@an",
+//                        bio: "Ptit student",
+//                        name: (first: "Nguyen", last: "An"),
+//                        profilePhoto: URL(string: "https://www.google.com/")!,
+//                        birthDate: Date(),
+//                        gender: .male,
+//                        counts: UserCount(followers: 1, following: 2, posts: 2),
+//                        joinDate: Date())
+//        let post = UserPost(identifier: "",
+//                            postType: .photo,
+//                            thumbnailImage: URL(string: "https://www.google.com/")!,
+//                            postURL: URL(string: "https://www.google.com/")!,
+//                            caption: "This post is hardcode",
+//                            likeCount: [],
+//                            comments: [],
+//                            createdData: Date(),
+//                            taggedUsers: [],
+//                            owner: user)
+//        
+//        let vc = PostViewController(model: post)
+//        vc.title = post.postType.rawValue
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
 }

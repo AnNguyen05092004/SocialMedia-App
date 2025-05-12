@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
+import SDWebImage
 
 struct EditProfileFormModel {
     let label: String
@@ -43,6 +47,7 @@ class EditProfileViewController: UIViewController {
                                                            target: self,
                                                            action: #selector(didTapCancel))
         configureModels()
+        loadUserData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -72,17 +77,27 @@ class EditProfileViewController: UIViewController {
     }
     
     //MARK: - Header Table View
+    private let profilePhotoButton: UIButton = {
+        let button = UIButton()
+        button.layer.masksToBounds = true
+        button.tintColor = .label
+        button.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.secondarySystemBackground.cgColor
+        return button
+    }()
+
     private func createTableHeaderView() -> UIView {
         let header = UIView(frame: CGRect(x: 0,
                                           y: 0,
                                           width: view.width,
                                           height: view.height/4).integral)
         let size = header.height/1.5
-        let profilePhotoButton = UIButton(frame: CGRect(x: (view.width-size)/2,
-                                                        y: (header.height-size)/2,
-                                                        width: size,
-                                                        height: size))
+        profilePhotoButton.frame = CGRect(x: (view.width-size)/2, 
+                                          y: (header.height-size)/2,
+                                          width: size, height: size)
         header.addSubview(profilePhotoButton)
+
         profilePhotoButton.layer.masksToBounds = true
         profilePhotoButton.layer.cornerRadius = size/2
         profilePhotoButton.tintColor = .label
@@ -102,34 +117,164 @@ class EditProfileViewController: UIViewController {
     }
     
     @objc private func didTapSave() {
-        // save to database
-        dismiss(animated: true, completion: nil)
+        view.endEditing(true)
+
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not logged in")
+            return
+        }
+
+        var updatedData: [String: Any] = [:]
+
+        for section in models {
+            for item in section {
+                let value = item.value ?? ""
+
+                switch item.label.lowercased() {
+                case "name":
+                    updatedData["name"] = value // 🔁 Không tách tên
+
+                case "username":
+                    updatedData["username"] = value
+
+                case "bio":
+                    updatedData["bio"] = value
+
+                case "email":
+                    updatedData["email"] = value
+
+                case "phone":
+                    updatedData["phone"] = value
+
+                case "gender":
+                    updatedData["gender"] = value.lowercased()
+
+                default:
+                    break
+                }
+            }
+        }
+
+        let db = Firestore.firestore()
+        db.collection("users").document(userID).updateData(updatedData) { error in
+            if let error = error {
+                print("Failed to update: \(error.localizedDescription)")
+                self.showAlert(title: "Error", message: "Không thể lưu thay đổi.")
+            } else {
+                print("Updated user info")
+                self.showAlert(title: "Thành công", message: "Thông tin của bạn đã được cập nhật.")
+            }
+        }
     }
+
+
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: { _ in
+            self.dismiss(animated: true)
+        }))
+        present(alert, animated: true)
+    }
+
     
     @objc private func didTapCancel() {
         dismiss(animated: true, completion: nil)
     }
     
+//    @objc private func didTapChangeProfilePicture() {
+//        let actionSheet = UIAlertController(title: "Profile Picture",
+//                                            message: "Change Profile Picture",
+//                                            preferredStyle: .actionSheet)
+//        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
+//            
+//        }))
+//        
+//        actionSheet.addAction(UIAlertAction(title: "Choose From Library", style: .default, handler: { _ in
+//            
+//        }))
+//        
+//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//        
+//        actionSheet.popoverPresentationController?.sourceView = view
+//        actionSheet.popoverPresentationController?.sourceRect = view.bounds
+//        
+//        present(actionSheet, animated: true)
+//    }
     @objc private func didTapChangeProfilePicture() {
         let actionSheet = UIAlertController(title: "Profile Picture",
                                             message: "Change Profile Picture",
                                             preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
-            
+        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
+            self?.presentPhotoPicker(sourceType: .camera)
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Choose From Library", style: .default, handler: { _ in
-            
+        actionSheet.addAction(UIAlertAction(title: "Choose From Library", style: .default, handler: { [weak self] _ in
+            self?.presentPhotoPicker(sourceType: .photoLibrary)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
+        // For iPad
         actionSheet.popoverPresentationController?.sourceView = view
         actionSheet.popoverPresentationController?.sourceRect = view.bounds
         
         present(actionSheet, animated: true)
     }
 
+    func presentPhotoPicker(sourceType: UIImagePickerController.SourceType) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = sourceType
+        picker.allowsEditing = true
+        present(picker, animated: true)
+    }
+
+    private func loadUserData() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).getDocument { [weak self] snapshot, error in
+            guard let self = self,
+                  let data = snapshot?.data(),
+                  error == nil else {
+                print("Failed to load user data")
+                return
+            }
+
+            self.models.removeAll()
+
+            // 🔁 Lấy ảnh đại diện
+            if let photoURLString = data["profile_photo_url"] as? String,
+               let photoURL = URL(string: photoURLString) {
+                DispatchQueue.main.async {
+                    self.profilePhotoButton.sd_setBackgroundImage(with: photoURL, for: .normal)
+                }
+            }
+
+            // 🔁 Lấy lại full name từ field "name"
+            let fullName = data["name"] as? String ?? ""
+
+            let section1 = [
+                EditProfileFormModel(label: "Name", placeholder: "Enter Name", value: fullName),
+                EditProfileFormModel(label: "Username", placeholder: "Enter Username", value: data["username"] as? String),
+                EditProfileFormModel(label: "Bio", placeholder: "Enter Bio", value: data["bio"] as? String)
+            ]
+
+            let section2 = [
+                EditProfileFormModel(label: "Email", placeholder: "Enter Email", value: data["email"] as? String),
+                EditProfileFormModel(label: "Phone", placeholder: "Enter Phone", value: data["phone"] as? String),
+                EditProfileFormModel(label: "Gender", placeholder: "Enter Gender", value: data["gender"] as? String)
+            ]
+
+            self.models = [section1, section2]
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+
+    
 }
 
 extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -160,9 +305,70 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension EditProfileViewController: FormTableViewCellDelete {
     func formTableViewCell(_ cell: FormTableViewCell, didUpdatedField updatedModel: EditProfileFormModel) {
-        //print ("Field Update to: \(value ?? "nil")")
-        //update the model
-        print(updatedModel.value ?? "nil")
-        
+        // Cập nhật lại model trong mảng models
+        for sectionIndex in 0..<models.count {
+            for rowIndex in 0..<models[sectionIndex].count {
+                if models[sectionIndex][rowIndex].label == updatedModel.label {
+                    models[sectionIndex][rowIndex].value = updatedModel.value
+                    break
+                }
+            }
+        }
     }
+}
+
+//Xử lý ảnh sau khi chọn
+extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        picker.dismiss(animated: true)
+
+        guard let image = info[.editedImage] as? UIImage,
+              let imageData = image.jpegData(compressionQuality: 0.8),
+              let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+
+        let storageRef = Storage.storage().reference().child("profile_pictures/\(userID).jpg")
+
+        // Upload image
+        storageRef.putData(imageData, metadata: nil) { [weak self] metadata, error in
+            guard error == nil else {
+                print("Upload failed: \(error!.localizedDescription)")
+                return
+            }
+
+            // Get download URL
+            storageRef.downloadURL { url, error in
+                guard let downloadURL = url else {
+                    print("Failed to get download URL")
+                    return
+                }
+
+                // Update Firestore
+                let db = Firestore.firestore()
+                db.collection("users").document(userID).updateData([
+                    "profile_photo_url": downloadURL.absoluteString
+                ]) { error in
+                    if let error = error {
+                        print("Failed to update Firestore: \(error.localizedDescription)")
+                    } else {
+                        print("Profile photo updated")
+
+                        // Optional: cập nhật UI
+                        DispatchQueue.main.async {
+                            self?.updateHeaderImage(url: downloadURL)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private func updateHeaderImage(url: URL) {
+        if let header = tableView.tableHeaderView,
+           let button = header.subviews.compactMap({ $0 as? UIButton }).first {
+            button.sd_setBackgroundImage(with: url, for: .normal)
+        }
+    }
+
 }

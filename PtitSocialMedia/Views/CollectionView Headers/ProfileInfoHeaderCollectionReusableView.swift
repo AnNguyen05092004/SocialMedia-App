@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol ProfileInfoHeaderCollectionReusableViewDelete: AnyObject {
     func frofileHeaderDidTapPostsButton(_ header: ProfileInfoHeaderCollectionReusableView)
@@ -102,6 +103,34 @@ class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func configure(with user: User) {
+        nameLabel.text = user.name
+        bioLabel.text = user.bio
+
+        // Ảnh đại diện
+        if let url = user.profilePhoto {
+            profilePhotoImageView.sd_setImage(with: url, completed: nil)
+        } else {
+            profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        }
+
+        // Số liệu
+        postsButton.setTitle("\(user.counts.posts)\nPosts", for: .normal)
+        followersButton.setTitle("\(user.counts.followers)\nFollowers", for: .normal)
+        followingButton.setTitle("\(user.counts.following)\nFollowing", for: .normal)
+
+        // Cho phép nhiều dòng (xuống dòng) cho nút
+        postsButton.titleLabel?.numberOfLines = 0
+        followersButton.titleLabel?.numberOfLines = 0
+        followingButton.titleLabel?.numberOfLines = 0
+
+        postsButton.titleLabel?.textAlignment = .center
+        followersButton.titleLabel?.textAlignment = .center
+        followingButton.titleLabel?.textAlignment = .center
+    }
+
+
     
     override func layoutSubviews() {
         super.layoutSubviews()
