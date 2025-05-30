@@ -69,14 +69,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
 
     @objc private func didTapChooseImage() {
-        let actionSheet = UIAlertController(title: "Chọn ảnh", message: "Chọn nguồn ảnh", preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: "Choose your photo", message: "Select image source", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
             self.presentImagePicker(sourceType: .camera)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Thư viện ảnh", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: "Library", style: .default, handler: { _ in
             self.presentImagePicker(sourceType: .photoLibrary)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Huỷ", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(actionSheet, animated: true)
     }
 
@@ -104,11 +104,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
               let caption = captionTextField.text, !caption.isEmpty,
               let imageData = image.jpegData(compressionQuality: 0.8),
               let currentUser = Auth.auth().currentUser else {
-            showErrorAlert("Vui lòng chọn ảnh, nhập caption và đăng nhập.")
+            showErrorAlert("Please select a photo, enter a caption and log in.")
             return
         }
 
-        let loadingAlert = UIAlertController(title: nil, message: "Đang đăng bài...", preferredStyle: .alert)
+        let loadingAlert = UIAlertController(title: nil, message: "Posting...", preferredStyle: .alert)
         present(loadingAlert, animated: true)
 
         let imageID = UUID().uuidString
@@ -118,7 +118,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             guard let strongSelf = self else { return }
             if let error = error {
                 loadingAlert.dismiss(animated: true) {
-                    strongSelf.showErrorAlert("Lỗi upload ảnh: \(error.localizedDescription)")
+                    strongSelf.showErrorAlert("Error uploading image: \(error.localizedDescription)")
                 }
                 return
             }
@@ -126,7 +126,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             storageRef.downloadURL { url, error in
                 if let error = error {
                     loadingAlert.dismiss(animated: true) {
-                        strongSelf.showErrorAlert("Lỗi lấy URL ảnh: \(error.localizedDescription)")
+                        strongSelf.showErrorAlert("Error getting image URL: \(error.localizedDescription)")
                     }
                     return
                 }
@@ -158,12 +158,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
 
             dismissAlert.dismiss(animated: true) {
                 if let error = error {
-                    self.showErrorAlert("Lỗi lưu bài đăng: \(error.localizedDescription)")
+                    self.showErrorAlert("Error saving post: \(error.localizedDescription)")
                 } else {
                     // Thông báo cho Homview
                     NotificationCenter.default.post(name: Notification.Name("newPostCreated"), object: nil)
                     
-                    let successAlert = UIAlertController(title: "Thành công", message: "Bài đăng đã được chia sẻ!", preferredStyle: .alert)
+                    let successAlert = UIAlertController(title: "Successfully completed", message: "Post has been shared!", preferredStyle: .alert)
                     successAlert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
                         self.resetForm()
                     })
@@ -177,7 +177,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     private func showErrorAlert(_ message: String) {
-        let alert = UIAlertController(title: "Lỗi", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         present(alert, animated: true)
     }

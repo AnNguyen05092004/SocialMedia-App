@@ -9,16 +9,16 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-enum UserNotificationType {
-    case like(post: UserPost)
-    case follow(state: FollowState)
-}
-
-struct UserNotification {
-    let type: UserNotificationType
-    let text: String
-    let user: User
-}
+//enum UserNotificationType {
+//    case like(post: UserPost)
+//    case follow(state: FollowState)
+//}
+//
+//struct UserNotification {
+//    let type: UserNotificationType
+//    let text: String
+//    let user: User
+//}
 
 class NotificationsViewController: UIViewController {
     

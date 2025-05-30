@@ -73,7 +73,7 @@ public class DatabaseManager {
                 print("❌ Failed to insert user: \(error.localizedDescription)")
                 completion(false)
             } else {
-                print("✅ User inserted to Firestore")
+                print("User inserted to Firestore")
                 completion(true)
             }
         }
