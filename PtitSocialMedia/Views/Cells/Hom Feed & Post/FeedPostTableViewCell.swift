@@ -105,27 +105,6 @@ class FeedPostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    public func configure(with post: UserPost) {
-//        // Reset state trước
-//        postImageView.isHidden = true
-//        playerLayer.isHidden = true
-//        player?.pause()
-//        player = nil
-//        playerLayer.player = nil
-//
-//        switch post.postType {
-//        case .photo:
-//            postImageView.isHidden = false
-//            postImageView.sd_setImage(with: post.postURL, placeholderImage: UIImage(systemName: "photo"), options: [.continueInBackground], completed: nil)
-//
-//        case .video:
-//            player = AVPlayer(url: post.postURL)
-//            playerLayer.player = player
-//            playerLayer.isHidden = false
-//            player?.volume = 0
-//            player?.play()
-//        }
-//    }
     public func configure(with post: UserPost) {
         postImageView.isHidden = true
         playerLayer.isHidden = true
@@ -149,12 +128,6 @@ class FeedPostTableViewCell: UITableViewCell {
         }
     }
 
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        postImageView.frame = contentView.bounds
-//        playerLayer.frame = contentView.bounds
-//    }
 //    
 //    override func prepareForReuse() {
 //        super.prepareForReuse()

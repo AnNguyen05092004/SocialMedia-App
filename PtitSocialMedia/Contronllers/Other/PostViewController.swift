@@ -14,18 +14,18 @@
 import UIKit
 import Firebase
 
-/// States of a rendered cell
-enum PostRenderType {
-    case header(provider: User)
-    case primaryContent(provider: UserPost) //post
-    case action(provider: String) // Like, comment, share
-    case comments(comments: [PostComment])
-}
-
-/// Model of rendered Post
-struct PostRenderViewModel {
-    let renderType: PostRenderType
-}
+///// States of a rendered cell
+//enum PostRenderType {
+//    case header(provider: User)
+//    case primaryContent(provider: UserPost) //post
+//    case action(provider: String) // Like, comment, share
+//    case comments(comments: [PostComment])
+//}
+//
+///// Model of rendered Post
+//struct PostRenderViewModel {
+//    let renderType: PostRenderType
+//}
 
 class PostViewController: UIViewController {
     

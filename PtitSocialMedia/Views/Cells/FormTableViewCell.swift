@@ -30,6 +30,7 @@ class FormTableViewCell: UITableViewCell {
         return field
     }()
 
+    //Hàm khởi tạo cell. Thêm label và textfield vào cell, gán delegate, và đăng ký lắng nghe sự kiện editingChanged.
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         clipsToBounds = true
@@ -41,6 +42,8 @@ class FormTableViewCell: UITableViewCell {
         field.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
 
     }
+    
+    private var model: EditProfileFormModel?
     @objc private func didChangeTextField(_ textField: UITextField) {
         model?.value = textField.text
         if let model = model {
@@ -53,7 +56,6 @@ class FormTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var model: EditProfileFormModel?
     // truyền dữ liệu từ model vào cell
     public func configure(with model: EditProfileFormModel) {
         self.model = model
@@ -63,7 +65,7 @@ class FormTableViewCell: UITableViewCell {
     }
     
     
-    // Khi cell được tái sử dụng (reuse), nó sẽ xoá dữ liệu cũ
+    // Khi cell được tái sử dụng (reuse), sẽ xoá dữ liệu cũ
     override func prepareForReuse() {
         super.prepareForReuse()
         formLabel.text = nil  // avoid using pre val for the next one
@@ -86,7 +88,7 @@ class FormTableViewCell: UITableViewCell {
     }
 }
 
-
+// Khi người dùng nhấn nút "Done" trên bàn phím: Gửi dữ liệu về delegate (controller)
 extension FormTableViewCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //delegate?.formTableViewCell(self, didUpdatedField: textField.text)

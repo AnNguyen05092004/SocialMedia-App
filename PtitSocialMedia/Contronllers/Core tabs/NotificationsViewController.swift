@@ -64,32 +64,7 @@ class NotificationsViewController: UIViewController {
         spinner.center = view.center
     }
     
-//    private func fetchNotifications() {
-//        for x in 0...100 {
-//            let user = User(username: "@an",
-//                            bio: "Ptit student",
-//                            name: (first: "Nguyen", last: "An"),
-//                            profilePhoto: URL(string: "https://www.google.com/")!,
-//                            birthDate: Date(),
-//                            gender: .male,
-//                            counts: UserCount(followers: 1, following: 2, posts: 2),
-//                            joinDate: Date())
-//            let post = UserPost(identifier: "",
-//                                postType: .photo,
-//                                thumbnailImage: URL(string: "https://www.google.com/")!,
-//                                postURL: URL(string: "https://www.google.com/")!,
-//                                caption: "This post is hardcode",
-//                                likeCount: [],
-//                                comments: [],
-//                                createdData: Date(),
-//                                taggedUsers: [], 
-//                                owner: user)
-//            let model = UserNotification(type: x%2==0 ?.like(post: post) : .follow(state: .following),
-//                                         text: "An like your post",
-//                                         user: user)
-//            models.append(model)
-//        }
-//    }
+
     
     private func fetchNotifications() {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }

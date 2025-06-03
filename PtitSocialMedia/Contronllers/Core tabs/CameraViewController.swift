@@ -102,72 +102,42 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @objc private func didTapPost() {
         guard let image = imageView.image,
               let caption = captionTextField.text, !caption.isEmpty,
-              let imageData = image.jpegData(compressionQuality: 0.8),
-              let currentUser = Auth.auth().currentUser else {
-            showErrorAlert("Please select a photo, enter a caption and log in.")
+              let imageData = image.jpegData(compressionQuality: 0.8) else {
+            showErrorAlert("Please select a photo and enter a caption.")
             return
         }
 
         let loadingAlert = UIAlertController(title: nil, message: "Posting...", preferredStyle: .alert)
         present(loadingAlert, animated: true)
 
-        let imageID = UUID().uuidString
-        let storageRef = Storage.storage().reference().child("posts/\(imageID).jpg")
+        let fileName = UUID().uuidString // tạo ra một chuỗi tên file duy nhất
 
-        storageRef.putData(imageData, metadata: nil) { [weak self] metadata, error in
-            guard let strongSelf = self else { return }
-            if let error = error {
-                loadingAlert.dismiss(animated: true) {
-                    strongSelf.showErrorAlert("Error uploading image: \(error.localizedDescription)")
-                }
-                return
-            }
+        StorageManager.shared.uploadPostImage(data: imageData, fileName: fileName) { [weak self] result in
+            switch result {
+            case .success(let imageURL):
+                DatabaseManager.shared.createPost(caption: caption, imageURL: imageURL) { dbResult in
+                    DispatchQueue.main.async {
+                        loadingAlert.dismiss(animated: true) {
+                            switch dbResult {
+                            case .success:
+                                let alert = UIAlertController(title: "Success", message: "Your post has been shared!", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                                    self?.resetForm()
+                                })
+                                self?.present(alert, animated: true)
 
-            storageRef.downloadURL { url, error in
-                if let error = error {
-                    loadingAlert.dismiss(animated: true) {
-                        strongSelf.showErrorAlert("Error getting image URL: \(error.localizedDescription)")
+                            case .failure(let error):
+                                self?.showErrorAlert("Error saving post: \(error.localizedDescription)")
+                            }
+                        }
                     }
-                    return
                 }
 
-                guard let imageUrl = url else { return }
-
-                // ✅ Chỉ gọi đúng 1 lần lưu bài
-                self?.uploadPostToFirestore(imageURL: imageUrl, caption: caption, dismissAlert: loadingAlert)
-            }
-        }
-    }
-
-    private func uploadPostToFirestore(imageURL: URL, caption: String, dismissAlert: UIAlertController) {
-        guard let currentUser = Auth.auth().currentUser else { return }
-
-        let postID = UUID().uuidString
-        let db = Firestore.firestore()
-        let postData: [String: Any] = [
-            "id": postID,
-            "user_id": currentUser.uid,
-            "username": currentUser.displayName ?? currentUser.email ?? "anonymous",
-            "caption": caption,
-            "post_url": imageURL.absoluteString,
-            "timestamp": Timestamp(date: Date())
-        ]
-
-        db.collection("posts").document(postID).setData(postData) { [weak self] error in
-            guard let self = self else { return }
-
-            dismissAlert.dismiss(animated: true) {
-                if let error = error {
-                    self.showErrorAlert("Error saving post: \(error.localizedDescription)")
-                } else {
-                    // Thông báo cho Homview
-                    NotificationCenter.default.post(name: Notification.Name("newPostCreated"), object: nil)
-                    
-                    let successAlert = UIAlertController(title: "Successfully completed", message: "Post has been shared!", preferredStyle: .alert)
-                    successAlert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                        self.resetForm()
-                    })
-                    self.present(successAlert, animated: true)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    loadingAlert.dismiss(animated: true) {
+                        self?.showErrorAlert("Error uploading image: \(error.localizedDescription)")
+                    }
                 }
             }
         }

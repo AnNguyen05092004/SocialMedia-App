@@ -106,7 +106,7 @@ class FeedPostHeaderTableViewCell: UITableViewCell {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill // tốt hơn để hiển thị avatar tròn
-        imageView.image = UIImage(systemName: "person.circle")
+
         return imageView
     }()
     
@@ -142,14 +142,15 @@ class FeedPostHeaderTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: User) {
-        usernameLabel.text = model.username
+        usernameLabel.text = model.name
         
         // Nếu có ảnh từ URL, dùng SDWebImage để tải
         if let url = model.profilePhoto {
-            profileImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "person.circle"))
+            profileImageView.sd_setImage(with: url, completed: nil)
         } else {
             profileImageView.image = UIImage(systemName: "person.circle")
         }
+        
     }
     
     override func layoutSubviews() {

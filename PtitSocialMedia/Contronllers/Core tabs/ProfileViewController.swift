@@ -53,7 +53,7 @@ class ProfileViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchCurrentUser()
+        loadUserData()
     }
 
 
@@ -74,135 +74,25 @@ class ProfileViewController: UIViewController {
     
     
     private var currentUser: User?
-    private func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let db = Firestore.firestore()
-        
-        db.collection("users").document(uid).getDocument { [weak self] snapshot, error in
-            guard let self = self,
-                  let data = snapshot?.data(),
-                  error == nil else {
-                print("Failed to fetch user")
-                return
-            }
 
-            let username = data["username"] as? String ?? ""
-            let bio = data["bio"] as? String ?? ""
-            let name = data["name"] as? String ?? ""
-            let profilePhotoURL = URL(string: data["profile_photo_url"] as? String ?? "")
+    private func loadUserData() {
+        DatabaseManager.shared.fetchCurrentUser { [weak self] user in
+            guard let self = self, var user = user else { return }
 
-            // Fetch followers & following count
-            self.fetchFollowerFollowingCount(for: uid) { followers, following in
-                let user = User(
-                    userId: uid,
-                    username: username,
-                    bio: bio,
-                    name: name,
-                    profilePhoto: profilePhotoURL,
-                    birthDate: Date(),
-                    gender: .other,
-                    counts: UserCount(followers: followers, following: following, posts: 0),
-                    joinDate: Date()
-                )
+            DatabaseManager.shared.fetchFollowerFollowingCount(uid: user.userId) { followers, following in
+                user.counts = UserCount(followers: followers, following: following, posts: 0)
 
                 self.currentUser = user
-                self.fetchUserPosts() // fetch bài post sau khi có user
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
+
+                DatabaseManager.shared.fetchUserPosts(uid: user.userId, currentUser: user) { posts in
+                    self.userPosts = posts
+                    self.currentUser?.counts.posts = posts.count
+
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                    }
                 }
             }
-        }
-    }
-
-    
-    private func fetchUserPosts() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let db = Firestore.firestore()
-
-        db.collection("posts")
-            .whereField("user_id", isEqualTo: uid)
-            .order(by: "timestamp", descending: true)
-            .getDocuments { [weak self] snapshot, error in
-                guard let self = self,
-                      let documents = snapshot?.documents,
-                      error == nil else {
-                    print("Failed to fetch posts")
-                    return
-                }
-
-                var posts = [UserPost]()
-                for doc in documents {
-                    let data = doc.data()
-                    guard let urlStr = data["post_url"] as? String,
-                          let url = URL(string: urlStr) else { continue }
-
-                    let post = UserPost(
-                        identifier: doc.documentID,
-                        postType: .photo,
-                        thumbnailImage: url,
-                        postURL: url,
-                        caption: data["caption"] as? String ?? "",
-                        likeCount: [],
-                        comments: [],
-                        createdData: Date(),
-                        taggedUsers: [],
-                        owner: self.currentUser!
-                    )
-                    posts.append(post)
-                }
-
-                self.userPosts = posts
-
-                // ✅ Cập nhật số lượng bài đăng vào currentUser.counts
-                if var user = self.currentUser {
-                    let newCounts = UserCount(
-                        followers: user.counts.followers,
-                        following: user.counts.following,
-                        posts: posts.count
-                    )
-                    self.currentUser = User(
-                        userId: user.userId,
-                        username: user.username,
-                        bio: user.bio,
-                        name: user.name,
-                        profilePhoto: user.profilePhoto,
-                        birthDate: user.birthDate,
-                        gender: user.gender,
-                        counts: newCounts,
-                        joinDate: user.joinDate
-                    )
-                }
-
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
-            }
-    }
-
-    
-    private func fetchFollowerFollowingCount(for userId: String, completion: @escaping (Int, Int) -> Void) {
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(userId)
-
-        var followersCount = 0
-        var followingCount = 0
-
-        let group = DispatchGroup()
-
-        group.enter()
-        userRef.collection("followers").getDocuments { snapshot, _ in
-            followersCount = snapshot?.documents.count ?? 0
-            group.leave()
-        }
-
-        group.enter()
-        userRef.collection("following").getDocuments { snapshot, _ in
-            followingCount = snapshot?.documents.count ?? 0
-            group.leave()
-        }
-
-        group.notify(queue: .main) {
-            completion(followersCount, followingCount)
         }
     }
 
@@ -284,7 +174,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
 extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelete {
     func frofileHeaderDidTapPostsButton(_ header: ProfileInfoHeaderCollectionReusableView) {
         guard userPosts.count > 0 else {
-            let alert = UIAlertController(title: "Bạn chưa có bài viết nào", message: "Hãy đăng bài đầu tiên nhé!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "You dont have any post", message: "Let post!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
             return

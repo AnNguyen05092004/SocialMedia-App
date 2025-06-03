@@ -7,28 +7,6 @@
 
 import Foundation
 
-enum Gender {
-    case male, female, other
-}
-
-struct User {
-    let userId: String
-    let username: String
-    let bio: String
-    let name: String
-    let profilePhoto: URL?
-    let birthDate: Date
-    let gender: Gender
-    var counts: UserCount
-    let joinDate: Date
-    
-}
-
-struct UserCount {
-    let followers: Int
-    let following: Int
-    let posts: Int
-}
 
 public enum UserPostType: String {
     case photo = "Photo"
@@ -57,6 +35,7 @@ struct PostLike {
 
 struct PostComment {
     let identifier: String
+    let postIdentifier: String   //  thêm dòng này
     let username: String
     let text: String
     let createdDate: Date

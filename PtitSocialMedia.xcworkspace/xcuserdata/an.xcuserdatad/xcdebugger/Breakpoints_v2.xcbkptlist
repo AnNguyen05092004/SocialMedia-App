@@ -36,5 +36,113 @@
             landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PtitSocialMedia/Views/Cells/Hom Feed &amp; Post/FeedPostHeaderTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "moreButton"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - 3a2eccf2bb5091e8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; __C.UIButton in variable initialization expression of PtitSocialMedia.FeedPostHeaderTableViewCell.moreButton : __C.UIButton"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "18">
+               </Location>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - d4ecbafc212e3214"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PtitSocialMedia.FeedPostHeaderTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; PtitSocialMedia.FeedPostHeaderTableViewCell"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "290">
+               </Location>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - 4df54bf748eb3d98"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PtitSocialMedia.FeedPostHeaderTableViewCell.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;PtitSocialMedia.FeedPostHeaderTableViewCell&gt;"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "235">
+               </Location>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - 3a2eccf2bb5091c9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; __C.UIButton in variable initialization expression of PtitSocialMedia.FeedPostHeaderTableViewCell.moreButton : __C.UIButton"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "18">
+               </Location>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - d4ecbafc212e3235"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PtitSocialMedia.FeedPostHeaderTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; PtitSocialMedia.FeedPostHeaderTableViewCell"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "290">
+               </Location>
+               <Location
+                  uuid = "C992B36C-ABA4-4586-9A05-EAE11610839B - 4df54bf748eb3db9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PtitSocialMedia.FeedPostHeaderTableViewCell.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;PtitSocialMedia.FeedPostHeaderTableViewCell&gt;"
+                  moduleName = "PtitSocialMedia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/an/Documents/IOS%2013%20APP/PtitSocialMedia/PtitSocialMedia/Views/Cells/Hom%20Feed%20&amp;%20Post/FeedPostHeaderTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "235">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

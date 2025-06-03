@@ -43,12 +43,9 @@ class SettingsViewController: UIViewController {
             SettingCellModel(title: "EditProfile") { [weak self] in //    Tránh retain cycle
                 self?.didTapEditProfile()
             },
-            SettingCellModel(title: "Invite Friends") { [weak self] in //    Tránh retain cycle
+            SettingCellModel(title: "Invite Friends") { [weak self] in
                 self?.didTapInviteFriends()
             },
-            SettingCellModel(title: "Save Original Posts") { [weak self] in
-                self?.didTapSaveOriginalPosts()
-            }
         ])
         
         data.append([
@@ -83,9 +80,6 @@ class SettingsViewController: UIViewController {
         
     }
     
-    private func didTapSaveOriginalPosts() {
-        
-    }
     
     enum SettingsURLType {
         case terms, privacy, help
@@ -121,10 +115,13 @@ class SettingsViewController: UIViewController {
                         let loginVC = LoginViewController()
                         loginVC.modalPresentationStyle = .fullScreen
                         self.present(loginVC, animated: true)
-                        self.navigationController?.popToRootViewController(animated: false)
+                        self.navigationController?.popToRootViewController(animated: false) //reset navigation stack
                         self.tabBarController?.selectedIndex = 0 //TabBarController, chuyển về tab đầu tiên
                     } else {
-                        fatalError("Could not log out")
+//                        fatalError("Could not log out")
+                        let alert = UIAlertController(title: "Error", message: "Could not log out. Please try again.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default))
+                            self.present(alert, animated: true)
                     }
                 }
             }
@@ -149,7 +146,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = data[indexPath.section][indexPath.row].title
-        cell.accessoryType = .disclosureIndicator
+        cell.accessoryType = .disclosureIndicator //Thêm mũi tên (>) bên phải cell
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

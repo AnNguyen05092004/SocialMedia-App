@@ -111,17 +111,23 @@ class ExploreViewController: UIViewController {
                         return PostLike(userId: userId, postIdentifier: postID)
                     } ?? []
 
+                    
                     // 2. Fetch comments
                     postRef.collection("comments").getDocuments { commentSnapshot, _ in
                         comments = commentSnapshot?.documents.compactMap { commentDoc in
                             let data = commentDoc.data()
-                            guard let username = data["username"] as? String,
-                                  let text = data["text"] as? String,
-                                  let timestamp = data["created_at"] as? Timestamp else {
+                            
+                            guard
+                                let username = data["username"] as? String,
+                                let text = data["text"] as? String,
+                                let timestamp = data["created_at"] as? Timestamp
+                            else {
                                 return nil
                             }
+
                             return PostComment(
                                 identifier: commentDoc.documentID,
+                                postIdentifier: postID, // ✅ Gán luôn từ bên ngoài
                                 username: username,
                                 text: text,
                                 createdDate: timestamp.dateValue(),
@@ -145,6 +151,7 @@ class ExploreViewController: UIViewController {
                         newModels.append(post)
                         group.leave()
                     }
+
                 }
             }
 
