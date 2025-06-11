@@ -35,6 +35,7 @@
 		A14BB9A72D9645E1001B8B79 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */; };
 		A14BB9AB2D9646A8001B8B79 /* PostEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */; };
 		A14BB9AF2D965571001B8B79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */; };
+		A1535CCF2DF8784100A69D26 /* HomeFeedRenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1535CCE2DF8784100A69D26 /* HomeFeedRenderViewModel.swift */; };
 		A16557042D95B6CE004C05FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557032D95B6CE004C05FA /* AppDelegate.swift */; };
 		A16557062D95B6CE004C05FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557052D95B6CE004C05FA /* SceneDelegate.swift */; };
 		A16557082D95B6CE004C05FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16557072D95B6CE004C05FA /* HomeViewController.swift */; };
@@ -101,6 +102,7 @@
 		A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorViewController.swift; sourceTree = "<group>"; };
 		A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A1535CCE2DF8784100A69D26 /* HomeFeedRenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedRenderViewModel.swift; sourceTree = "<group>"; };
 		A16557002D95B6CE004C05FA /* PtitSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PtitSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16557032D95B6CE004C05FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A16557052D95B6CE004C05FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -189,13 +191,13 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		A13147AF2DB3FE8D0003FE72 /* CollectionView Headers */ = {
+		A13147AF2DB3FE8D0003FE72 /* Profile Headers */ = {
 			isa = PBXGroup;
 			children = (
 				A13147B42DB4002C0003FE72 /* ProfileInfoHeaderCollectionReusableView.swift */,
 				A13147B62DB400720003FE72 /* ProfileTabsCollectionReusableView.swift */,
 			);
-			path = "CollectionView Headers";
+			path = "Profile Headers";
 			sourceTree = "<group>";
 		};
 		A14BB98A2D964375001B8B79 /* Models */ = {
@@ -203,9 +205,8 @@
 			children = (
 				A13147BA2DB4A1440003FE72 /* PostModel.swift */,
 				A10D7A5D2DE698E0009D8E5E /* NotificationModel.swift */,
-				A1F84A6C2DEB1A7200E70D30 /* EditProfileModel.swift */,
 				A1F84A6E2DEC4AC000E70D30 /* UserModel.swift */,
-				A1F84A702DEC867700E70D30 /* PostRenderViewModel.swift */,
+				A1535CD12DF878B200A69D26 /* Others */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -213,7 +214,7 @@
 		A14BB98B2D964380001B8B79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A13147AF2DB3FE8D0003FE72 /* CollectionView Headers */,
+				A13147AF2DB3FE8D0003FE72 /* Profile Headers */,
 				A12420172DACBC5E009FFB6F /* Cells */,
 				A165570C2D95B6D0004C05FA /* Assets.xcassets */,
 				A14BB98E2D9643DA001B8B79 /* Storyboards */,
@@ -235,8 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				A14BB9AE2D965571001B8B79 /* GoogleService-Info.plist */,
-				A16557032D95B6CE004C05FA /* AppDelegate.swift */,
-				A16557052D95B6CE004C05FA /* SceneDelegate.swift */,
 				A191ACAB2D96919100E004E0 /* DatabaseManager.swift */,
 				A191ACAD2D96938900E004E0 /* AuthManager.swift */,
 				A191ACB12D96A52100E004E0 /* Extentions.swift */,
@@ -290,6 +289,16 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		A1535CD12DF878B200A69D26 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				A1F84A6C2DEB1A7200E70D30 /* EditProfileModel.swift */,
+				A1F84A702DEC867700E70D30 /* PostRenderViewModel.swift */,
+				A1535CCE2DF8784100A69D26 /* HomeFeedRenderViewModel.swift */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		A16556F72D95B6CE004C05FA = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +324,8 @@
 		A16557022D95B6CE004C05FA /* PtitSocialMedia */ = {
 			isa = PBXGroup;
 			children = (
+				A16557032D95B6CE004C05FA /* AppDelegate.swift */,
+				A16557052D95B6CE004C05FA /* SceneDelegate.swift */,
 				A14BB98D2D964397001B8B79 /* Services */,
 				A14BB98A2D964375001B8B79 /* Models */,
 				A14BB98B2D964380001B8B79 /* Views */,
@@ -565,6 +576,7 @@
 				A10D7A5E2DE698E0009D8E5E /* NotificationModel.swift in Sources */,
 				A1F84A6F2DEC4AC000E70D30 /* UserModel.swift in Sources */,
 				A124201F2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift in Sources */,
+				A1535CCF2DF8784100A69D26 /* HomeFeedRenderViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

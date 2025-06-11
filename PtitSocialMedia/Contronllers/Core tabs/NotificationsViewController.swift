@@ -9,17 +9,6 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-//enum UserNotificationType {
-//    case like(post: UserPost)
-//    case follow(state: FollowState)
-//}
-//
-//struct UserNotification {
-//    let type: UserNotificationType
-//    let text: String
-//    let user: User
-//}
-
 class NotificationsViewController: UIViewController {
     
     private let tableView: UITableView = {
@@ -53,6 +42,11 @@ class NotificationsViewController: UIViewController {
         view.addSubview(spinner)
         //spinner.startAnimating()
         
+//        fetchNotifications()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchNotifications()
     }
     
@@ -67,110 +61,25 @@ class NotificationsViewController: UIViewController {
 
     
     private func fetchNotifications() {
-        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-
-        let db = Firestore.firestore()
-        db.collection("notifications")
-            .whereField("toUserId", isEqualTo: currentUserID)
-            .order(by: "timestamp", descending: true)
-            .getDocuments { [weak self] snapshot, error in
-                guard let self = self,
-                      let documents = snapshot?.documents, error == nil else {
-                    return
-                }
-
-                self.models.removeAll()
-                let group = DispatchGroup()
-
-                for doc in documents {
-                    let data = doc.data()
-                    guard let type = data["type"] as? String,
-                          let fromUserId = data["fromUserId"] as? String,
-                          let postId = data["postId"] as? String else {
-                        continue
-                    }
-
-                    group.enter()
-                    self.fetchUser(uid: fromUserId) { user in
-                        self.fetchPost(postId: postId) { post in
-                            let model = UserNotification(
-                                type: .like(post: post),
-                                text: "\(user.username) liked your post",
-                                user: user
-                            )
-                            self.models.append(model)
-                            group.leave()
-                        }
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    self.tableView.reloadData()
-                    if self.models.isEmpty {
-                        self.addNoNotificationsView()
-                    }
-                }
-            }
-    }
-
-
-    private func fetchUser(uid: String, completion: @escaping (User) -> Void) {
-        let db = Firestore.firestore()
-        db.collection("users").document(uid).getDocument { snapshot, error in
-            guard let data = snapshot?.data(), error == nil else {
-                print("Failed to fetch user info")
-                return
-            }
-
-            let user = User(
-                userId: uid,
-                username: data["username"] as? String ?? "",
-                bio: data["bio"] as? String ?? "",
-                name: data["name"] as? String ?? "",
-                profilePhoto: URL(string: data["profile_photo_url"] as? String ?? ""),
-                birthDate: Date(),
-                gender: .other,
-                counts: UserCount(followers: 0, following: 0, posts: 0),
-                joinDate: Date()
-            )
-            completion(user)
+        DatabaseManager.shared.fetchNotifications { [weak self] notifications in
+            guard let self = self else { return }
+            self.models = notifications
+            self.tableView.reloadData()
+//            if self.models.isEmpty {
+//                self.addNoNotificationsView()
+//            }
         }
     }
 
 
-    private func fetchPost(postId: String, completion: @escaping (UserPost) -> Void) {
-        let db = Firestore.firestore()
-        db.collection("posts").document(postId).getDocument { snapshot, error in
-            guard let data = snapshot?.data(),
-                  let username = data["username"] as? String,
-                  let postURLStr = data["post_url"] as? String,
-                  let postURL = URL(string: postURLStr) else {
-                return
-            }
-
-            let dummyUser = User(userId: Auth.auth().currentUser?.uid ?? "", username: username, bio: "", name: (""), profilePhoto: nil, birthDate: Date(), gender: .other, counts: UserCount(followers: 0, following: 0, posts: 0), joinDate: Date())
-
-            let post = UserPost(identifier: postId,
-                                postType: .photo,
-                                thumbnailImage: postURL,
-                                postURL: postURL,
-                                caption: data["caption"] as? String,
-                                likeCount: [],
-                                comments: [],
-                                createdData: Date(),
-                                taggedUsers: [],
-                                owner: dummyUser)
-            completion(post)
-        }
-    }
 
     
-    private func addNoNotificationsView() {
-        tableView.isHidden = true
-        view.addSubview(tableView)
-        noNotificationsView.frame = CGRect(x: 0, y: 0, width: view.width/2, height: view.width/3)
-        noNotificationsView.center = view.center
-    }
+//    private func addNoNotificationsView() {
+//        tableView.isHidden = true
+//        view.addSubview(tableView)
+//        noNotificationsView.frame = CGRect(x: 0, y: 0, width: view.width/2, height: view.width/3)
+//        noNotificationsView.center = view.center
+//    }
 }
 
 extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {

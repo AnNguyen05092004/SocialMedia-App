@@ -30,13 +30,10 @@ import Firebase
 class PostViewController: UIViewController {
     
     private var model: UserPost?
-    
-    private var renderModels = [PostRenderViewModel]()
+    private var postViewModel: PostViewModel?
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        
-        // register cell
         tableView.register(FeedPostTableViewCell.self, forCellReuseIdentifier: FeedPostTableViewCell.identifier)
         tableView.register(FeedPostHeaderTableViewCell.self, forCellReuseIdentifier: FeedPostHeaderTableViewCell.identifier)
         tableView.register(FeedPostActionsTableViewCell.self, forCellReuseIdentifier: FeedPostActionsTableViewCell.identifier)
@@ -50,7 +47,6 @@ class PostViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -58,151 +54,215 @@ class PostViewController: UIViewController {
         tableView.frame = view.bounds
     }
 
-    
     init(model: UserPost?) {
         super.init(nibName: nil, bundle: nil)
         self.model = model
-        configureModels() // Unless can not render UI
+        configureModel()
     }
-    
-//    private func configureModels() {
-//        guard let userPostModel = self.model else {
-//            return
-//        }
-//        
-//        // Header
-//        renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner)))
-//        
-//        // Post
-//        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
-//        
-//        // Actions
-//        renderModels.append(PostRenderViewModel(renderType: .action(provider: "")))
-//        
-//        // 4 Comment
-//        var comments = [PostComment]()
-//        for x in 0..<4 {
-//            comments.append(PostComment(identifier: "123\(x)", username: "@Binh", text: "Great Post", createdDate: Date(), like: []))
-//        }
-//        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
-//    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureModels() {
-        guard let userPostModel = self.model else {
-            return
-        }
-
-        // Header
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner)))
-
-        // Post
-        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
-
-        // Actions
-        renderModels.append(PostRenderViewModel(renderType: .action(provider: userPostModel.identifier)))
-
-        // Comments (dùng comment thật từ model)
-        renderModels.append(PostRenderViewModel(renderType: .comments(comments: userPostModel.comments)))
+    private func configureModel() {
+        guard let userPostModel = self.model else { return }
+        postViewModel = PostViewModel(post: userPostModel)
     }
+}
 
+// Model mới đơn giản hơn
+struct PostViewModel {
+    var post: UserPost
     
+    var user: User {
+        return post.owner
+    }
+    
+    var postID: String {
+        return post.identifier
+    }
+    
+    var comments: [PostComment] {
+        return post.comments
+    }
+    
+    var likeCount: Int {
+        return post.likeCount.count
+    }
+    
+    var commentCount: Int {
+        return post.comments.count
+    }
+    
+    func isLikedByUser(_ userId: String) -> Bool {
+        return post.likeCount.contains { $0.userId == userId }
+    }
 }
 
 extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return renderModels.count
+        return 4  // Header, Content, Actions, Comments
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch renderModels[section].renderType {
-            case.action(_): return 1
-            case.comments(let commments): return commments.count>4 ? 4 : commments.count
-            case.primaryContent(_): return 1
-            case.header(_): return 1
+        guard let model = postViewModel else { return 0 }
+        
+        switch section {
+            case 0, 1, 2:
+                return 1
+            case 3:
+                return min(model.comments.count, 5)
+            default:
+                return 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = renderModels[indexPath.section]
-        switch model.renderType {
-        case .header(let user):
-            let cell = tableView.dequeueReusableCell(withIdentifier: FeedPostHeaderTableViewCell.identifier, for: indexPath) as! FeedPostHeaderTableViewCell
-            cell.configure(with: user)
-            return cell
-
-        case .primaryContent(let post):
-            let cell = tableView.dequeueReusableCell(withIdentifier: FeedPostTableViewCell.identifier, for: indexPath) as! FeedPostTableViewCell
-            cell.configure(with: post)
-            return cell
-
-            case .action(let postID):
+        guard let model = postViewModel else { return UITableViewCell() }
+        
+        switch indexPath.section {
+            case 0: // Header
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: FeedPostHeaderTableViewCell.identifier,
+                    for: indexPath
+                ) as! FeedPostHeaderTableViewCell
+                cell.configure(with: model.user)
+                cell.delegate = self
+                return cell
+                
+            case 1: // Content
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: FeedPostTableViewCell.identifier,
+                    for: indexPath
+                ) as! FeedPostTableViewCell
+                cell.configure(with: model.post)
+                return cell
+                
+            case 2: // Actions
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: FeedPostActionsTableViewCell.identifier,
                     for: indexPath
                 ) as! FeedPostActionsTableViewCell
-
-                cell.postID = postID
+                
+                cell.postID = model.postID
                 cell.delegate = self
-
-                // ✅ Tìm UserPost từ renderModels (giả sử section - 1 là .primaryContent)
-                if indexPath.section > 0,
-                   case .primaryContent(let post) = renderModels[indexPath.section - 1].renderType {
-                    let currentUID = Auth.auth().currentUser?.uid ?? ""
-                    let isLiked = post.likeCount.contains { $0.userId == currentUID }
-                    cell.configure(with: post, isLikedByUser: isLiked, likeCount: post.likeCount.count, commentCount: post.comments.count)
-                }
-
+                
+                let currentUID = Auth.auth().currentUser?.uid ?? ""
+                let isLiked = model.isLikedByUser(currentUID)
+                
+                cell.configure(
+                    with: model.post,
+                    isLikedByUser: isLiked,
+                    likeCount: model.likeCount,
+                    commentCount: model.commentCount
+                )
                 return cell
-
-
-
-        case .comments(let comments):
+                
+            case 3: // Comments
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: FeedPostGeneralTableViewCell.identifier,
                     for: indexPath
                 ) as! FeedPostGeneralTableViewCell
-
-                let comment = comments[indexPath.row]
+                
+                let comment = model.comments[indexPath.row]
                 cell.configure(with: comment)
                 return cell
+                
+            default:
+                break
         }
-
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let model = renderModels[indexPath.section]
-        
-        switch model.renderType {
-            case.header(_): return 70
-            case.primaryContent(_): return tableView.width + 40
-            case.action(_): return 110
-            case.comments(_): return 50
+        switch indexPath.section {
+            case 0: return 70
+            case 1: return tableView.width + 40
+            case 2: return 110
+            case 3: return 50
+            default: return 0
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return section == 3 ? 70 : 0
+    }
+}
+
+extension PostViewController: FeedPostHeaderTableViewCellDelegate {
+    func didTapMoreButton() {
+        let actionSheet = UIAlertController(title: "Post Options", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Report Post", style: .destructive, handler: { [weak self] _ in
+            self?.reportPost()
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(actionSheet, animated: true)
+    }
+    
+    func reportPost() {
+        // TODO: implement report
     }
 }
 
 extension PostViewController: FeedPostActionsTableViewCellDelegate {
     func didTapLikeButton(postID: String) {
-        print("Liked post with ID: \(postID)")
-        // TODO: handle Firestore like logic if needed
-    }
-
-    func didTapComnentButton(postID: String) {
-        print("Comment tapped on post ID: \(postID)")
-        // TODO: present CommentViewController if needed
-    }
-
-    func didTapSendButton() {
-        print("Send tapped")
-        // TODO: handle share or message
+        guard let user = Auth.auth().currentUser else { return }
+        
+        DatabaseManager.shared.toggleLike(postID: postID) { [weak self] liked, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Toggle like error: \(error.localizedDescription)")
+                return
+            }
+            
+            self.updateLike(liked: liked, userId: user.uid)
+            
+            if liked {
+                DatabaseManager.shared.addLikeNotification(postID: postID, likedBy: user.uid)
+            }
+        }
     }
     
+    private func updateLike(liked: Bool, userId: String) {
+        guard var model = postViewModel else { return }
+        
+        if liked {
+            model.post.likeCount.append(PostLike(userId: userId, postIdentifier: model.postID))
+        } else {
+            model.post.likeCount.removeAll { $0.userId == userId }
+        }
+        
+        self.postViewModel = model // Gán lại model mới (đã được cập nhật like) vào self.postViewModel để lưu thay đổi.
+        
+        //Reload lại section thứ 2 của table view
+        DispatchQueue.main.async {
+            self.tableView.reloadSections(IndexSet(integer: 2), with: .none)
+        }
+    }
+    
+    func didTapComnentButton(postID: String) {
+        let vc = CommentViewController()
+        vc.postID = postID
+        let nav = UINavigationController(rootViewController: vc)
+        
+        if #available(iOS 15.0, *) {
+            if let sheet = nav.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.prefersGrabberVisible = true
+                sheet.preferredCornerRadius = 20
+            }
+        }
+        
+        present(nav, animated: true)
+    }
+    
+    func didTapSendButton() {
+        print("send")
+    }
 }

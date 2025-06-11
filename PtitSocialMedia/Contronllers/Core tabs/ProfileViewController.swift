@@ -12,8 +12,6 @@ import FirebaseFirestore
 class ProfileViewController: UIViewController {
     
     private var collectionView: UICollectionView?
-    
-    private var userPosts = [UserPost]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +70,7 @@ class ProfileViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true) //chuyển sang màn hình mới có nút back về.
     }
     
-    
+    private var userPosts = [UserPost]()
     private var currentUser: User?
 
     private func loadUserData() {

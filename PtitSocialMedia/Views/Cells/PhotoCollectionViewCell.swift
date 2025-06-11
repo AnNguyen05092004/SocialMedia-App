@@ -35,8 +35,6 @@ class PhotoCollectionViewCell: UICollectionViewCell { //
         contentView.backgroundColor = .secondarySystemBackground
         contentView.addSubview(photoImageView)
         contentView.clipsToBounds = true
-        accessibilityLabel = "User post image" // Voice over hỗ trợ người bị khiếm thính
-        accessibilityHint = " Double-tap to open post"
     }
     
     required init?(coder: NSCoder) {

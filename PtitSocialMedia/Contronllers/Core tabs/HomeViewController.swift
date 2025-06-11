@@ -44,12 +44,6 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-struct HomeFeedRenderViewModel {
-    let header: PostRenderViewModel
-    var post: PostRenderViewModel
-    var actions: PostRenderViewModel
-    let comments: PostRenderViewModel
-}
 
 class HomeViewController: UIViewController {
     
@@ -71,8 +65,11 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didCreateNewPost), name: Notification.Name("newPostCreated"), object: nil)
         // đăng ký lắng nghe notification "newPostCreated", để khi có bài viết mới thì gọi tiếp
+        NotificationCenter.default.addObserver(self, selector: #selector(didCreateNewPost), name: Notification.Name("newPostCreated"), object: nil)
+        // Đăng ký lắng nghe notification khi có comment mới
+        NotificationCenter.default.addObserver(self, selector: #selector(didPostComment), name: Notification.Name("didPostComment"), object: nil)
+        
         loadPosts()
     }
     
@@ -99,9 +96,54 @@ class HomeViewController: UIViewController {
     }
 
     private func loadPosts() {
+        // Thêm loading indicator
+        let loadingIndicator = UIActivityIndicatorView(style: .medium)
+        loadingIndicator.startAnimating()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: loadingIndicator)
+        
         DatabaseManager.shared.fetchAllPosts { [weak self] models in
-            self?.feedRenderModels = models
-            self?.tableView.reloadData()
+            guard let self = self else { return }
+            
+            // Cập nhật UI trên main thread
+            DispatchQueue.main.async {
+                // Xóa loading indicator
+                self.navigationItem.rightBarButtonItem = nil
+                
+                // Cập nhật dữ liệu và reload table view
+                self.feedRenderModels = models
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    @objc private func didPostComment(_ notification: Notification) {
+        guard let postId = notification.userInfo?["postId"] as? String else { return }
+        
+        // Tìm vị trí bài viết trong feedRenderModels
+        guard let index = self.feedRenderModels.firstIndex(where: {
+            if case .action(let id) = $0.actions.renderType {
+                return id == postId
+            }
+            return false
+        }) else { return }
+        
+        // Cập nhật số lượng comment
+        var model = feedRenderModels[index]
+        if case .primaryContent(var post) = model.post.renderType {
+            // Fetch lại comments mới nhất
+            DatabaseManager.shared.fetchComments(for: postId) { [weak self] comments in
+                guard let self = self else { return }
+                post.comments = comments
+                model.post = PostRenderViewModel(renderType: .primaryContent(provider: post))
+                model.actions = PostRenderViewModel(renderType: .action(provider: post.identifier))
+                self.feedRenderModels[index] = model
+                
+                // Reload section chứa actions để cập nhật số lượng comment
+                let section = index * 4 + 2
+                DispatchQueue.main.async {
+                    self.tableView.reloadSections(IndexSet(integer: section), with: .none)
+                }
+            }
         }
     }
     
@@ -119,12 +161,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         switch subSection {
             case 0, 1, 2:
                 return 1
-            case 3:
-                switch model.comments.renderType {
-                    case .comments(let comments):
-                        return comments.count > 2 ? 2 : comments.count
-                    default: return 0
-                }
+//            case 3:
+//                switch model.comments.renderType {
+//                    case .comments(let comments):
+//                        return comments.count > 2 ? 2 : comments.count
+//                    default: return 0
+//                }
             default:
                 return 0
         }
@@ -132,14 +174,16 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let position = indexPath.section / 4
-        let model = feedRenderModels[position]
+        let model = feedRenderModels[position] // Chuyền data vào model
         let subSection = indexPath.section % 4
         
         switch subSection {
             case 0:
+                // .header(let user) kiểm tra xem renderType có phải là case .header không.Nếu đúng, giá trị provider trong case .header sẽ được gán vào biến user
                 if case .header(let user) = model.header.renderType {
                     let cell = tableView.dequeueReusableCell(withIdentifier: FeedPostHeaderTableViewCell.identifier, for: indexPath) as! FeedPostHeaderTableViewCell
                     cell.configure(with: user)
+                    cell.delegate = self
                     return cell
                 }
 
@@ -178,12 +222,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 
-            case 3:
-                if case .comments(let comments) = model.comments.renderType {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: FeedPostGeneralTableViewCell.identifier, for: indexPath) as! FeedPostGeneralTableViewCell
-                    // TODO: configure comments later
-                    return cell
-                }
+//            case 3:
+//                if case .comments(let comments) = model.comments.renderType {
+//                    let cell = tableView.dequeueReusableCell(withIdentifier: FeedPostGeneralTableViewCell.identifier, for: indexPath) as! FeedPostGeneralTableViewCell
+//                    // TODO: configure comments later
+//                    return cell
+//                }
             default:
                 break
         }

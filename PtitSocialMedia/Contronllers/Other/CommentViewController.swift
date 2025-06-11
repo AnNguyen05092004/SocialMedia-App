@@ -17,6 +17,7 @@ class CommentViewController: UIViewController {
 
     var postID: String = ""
     private var comments: [PostComment] = []
+    private var listener: ListenerRegistration?
 
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -36,8 +37,6 @@ class CommentViewController: UIViewController {
         button.setTitle("Gửi", for: .normal)
         return button
     }()
-
-    private var listener: ListenerRegistration?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,148 +76,45 @@ class CommentViewController: UIViewController {
         }
     }
 
-//    private func observeComments() {
-//        let db = Firestore.firestore()
-//        listener = db.collection("posts").document(postID).collection("comments").order(by: "created_at", descending: false).addSnapshotListener { [weak self] snapshot, error in
-//            guard let self = self, error == nil, let documents = snapshot?.documents else { return }
-//
-//            self.comments = documents.compactMap { doc in
-//                let data = doc.data()
-//                guard let username = data["username"] as? String,
-//                      let text = data["text"] as? String,
-//                      let timestamp = data["created_at"] as? Timestamp else {
-//                    return nil
-//                }
-//                return PostComment(identifier: doc.documentID, username: username, text: text, createdDate: timestamp.dateValue(), like: [])
-//            }
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-//        }
-//    }
-//
-//    deinit {
-//        listener?.remove()
-//    }
-//
-//    @objc private func didTapSend() {
-//        guard let text = commentInputField.text, !text.isEmpty,
-//              let user = Auth.auth().currentUser else {
-//            return
-//        }
-//
-//        let db = Firestore.firestore()
-//        let newCommentID = UUID().uuidString
-//        let commentData: [String: Any] = [
-//            "username": user.displayName ?? user.email ?? "anonymous",
-//            "text": text,
-//            "created_at": Timestamp(date: Date())
-//        ]
-//
-//        db.collection("posts").document(postID).collection("comments").document(newCommentID).setData(commentData) { [weak self] error in
-//            guard let self = self, error == nil else { return }
-//            self.commentInputField.text = ""
-//        }
-//    }
     
     private func observeComments() {
-        let db = Firestore.firestore()
-        
-        listener = db.collection("posts")
-            .document(postID)
-            .collection("comments")
-            .order(by: "created_at", descending: false)
-            .addSnapshotListener { [weak self] snapshot, error in
-                guard let self = self, error == nil, let documents = snapshot?.documents else { return }
-
-                self.comments = documents.compactMap { doc in
-                    let data = doc.data()
-                    guard
-                        let username = data["username"] as? String,
-                        let text = data["text"] as? String,
-                        let timestamp = data["created_at"] as? Timestamp,
-                        let postIdentifier = data["postIdentifier"] as? String
-                    else {
-                        return nil
-                    }
-
-                    return PostComment(
-                        identifier: doc.documentID,
-                        postIdentifier: postIdentifier,
-                        username: username,
-                        text: text,
-                        createdDate: timestamp.dateValue(),
-                        like: []
-                    )
-                }
-
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+        listener = DatabaseManager.shared.observeComments(for: postID) { [weak self] comments in
+            self?.comments = comments
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
             }
+        }
     }
 
     @objc private func didTapSend() {
-        guard
-            let text = commentInputField.text, !text.trimmingCharacters(in: .whitespaces).isEmpty,
-            let user = Auth.auth().currentUser
-        else {
+        guard let text = commentInputField.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
 
-        let db = Firestore.firestore()
-        let newCommentID = UUID().uuidString
-        let now = Date()
-
-        let commentData: [String: Any] = [
-            "username": user.displayName ?? user.email ?? "anonymous",
-            "userId": user.uid,
-            "text": text,
-            "postIdentifier": postID,
-            "created_at": Timestamp(date: now)
-        ]
-
-        let commentRef = db.collection("posts").document(postID).collection("comments").document(newCommentID)
-
-        commentRef.setData(commentData) { [weak self] error in
-            guard let self = self, error == nil else {
-                print("❌ Failed to send comment: \(error?.localizedDescription ?? "")")
-                return
+        DatabaseManager.shared.addComment(postID: postID, text: text) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self!.commentInputField.text = ""
+                    
+                    // Gửi notification để cập nhật UI
+                    NotificationCenter.default.post(
+                        name: Notification.Name("didPostComment"),
+                        object: nil,
+                        userInfo: [
+                            "postId": self!.postID
+                        ]
+                    )
+                }
+            case .failure(let error):
+                print("Failed to send comment: \(error.localizedDescription)")
             }
-
-            DispatchQueue.main.async {
-                self.commentInputField.text = ""
-            }
-
-            // ✅ Gửi thông báo cho chủ bài viết
-            //self.sendCommentNotification(fromUserId: user.uid, postId: self.postID)
-        }
-    }
-    
-    private func sendCommentNotification(fromUserId: String, postId: String) {
-        let db = Firestore.firestore()
-
-        db.collection("posts").document(postId).getDocument { snapshot, error in
-            guard let data = snapshot?.data(),
-                  let postOwnerId = data["user_id"] as? String,
-                  postOwnerId != fromUserId else {
-                return
-            }
-
-            let notificationID = UUID().uuidString
-            let notification: [String: Any] = [
-                "id": notificationID,
-                "type": "comment",
-                "fromUserId": fromUserId,
-                "toUserId": postOwnerId,
-                "postId": postId,
-                "timestamp": Timestamp(date: Date())
-            ]
-
-            db.collection("notifications").document(notificationID).setData(notification)
         }
     }
 
+    deinit {
+        listener?.remove()
+    }
 }
 
 extension CommentViewController: UITableViewDataSource, UITableViewDelegate {

@@ -120,6 +120,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
                         loadingAlert.dismiss(animated: true) {
                             switch dbResult {
                             case .success:
+                                // Post notification để HomeViewController biết có bài mới
+                                NotificationCenter.default.post(name: Notification.Name("newPostCreated"), object: nil)
                                 let alert = UIAlertController(title: "Success", message: "Your post has been shared!", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
                                     self?.resetForm()

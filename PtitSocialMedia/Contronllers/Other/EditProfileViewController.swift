@@ -127,7 +127,7 @@ class EditProfileViewController: UIViewController {
 
                 switch item.label.lowercased() {
                 case "name":
-                    updatedData["name"] = value // 🔁 Không tách tên
+                    updatedData["name"] = value
 
                 case "username":
                     updatedData["username"] = value
@@ -153,9 +153,9 @@ class EditProfileViewController: UIViewController {
         DatabaseManager.shared.updateUserProfile(uid: userID, data: updatedData) { success in
             DispatchQueue.main.async {
                 if success {
-                    self.showAlert(title: "Thành công", message: "Thông tin đã được cập nhật.")
+                    self.showAlert(title: "Success", message: "Your information successfully updated")
                 } else {
-                    self.showAlert(title: "Lỗi", message: "Không thể lưu thay đổi.")
+                    self.showAlert(title: "Error", message: "Can not update.")
                 }
             }
         }

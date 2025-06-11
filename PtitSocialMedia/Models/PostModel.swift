@@ -21,7 +21,7 @@ public struct UserPost {
     let postURL: URL // video or photo url
     let caption: String?
     var likeCount: [PostLike]
-    let comments: [PostComment]
+    var comments: [PostComment]
     let createdData: Date
     let taggedUsers: [String]
     let owner: User
