@@ -58,12 +58,17 @@ class HomeViewController: UIViewController {
         return tableView
     }()
     
+    private let refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         handleNoAuthenticated()
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
         
         // đăng ký lắng nghe notification "newPostCreated", để khi có bài viết mới thì gọi tiếp
         NotificationCenter.default.addObserver(self, selector: #selector(didCreateNewPost), name: Notification.Name("newPostCreated"), object: nil)
@@ -94,6 +99,10 @@ class HomeViewController: UIViewController {
     @objc private func didCreateNewPost() {
         loadPosts()
     }
+    
+    @objc private func didPullToRefresh() {
+        loadPosts()
+    }
 
     private func loadPosts() {
         // Thêm loading indicator
@@ -108,6 +117,7 @@ class HomeViewController: UIViewController {
             DispatchQueue.main.async {
                 // Xóa loading indicator
                 self.navigationItem.rightBarButtonItem = nil
+                self.refreshControl.endRefreshing()
                 
                 // Cập nhật dữ liệu và reload table view
                 self.feedRenderModels = models
@@ -267,6 +277,15 @@ extension HomeViewController: FeedPostHeaderTableViewCellDelegate {
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(actionSheet, animated: true)
+    }
+    
+    func didTapUsername(userId: String) {
+        guard let currentUID = FirebaseAuth.Auth.auth().currentUser?.uid, userId != currentUID else {
+            return
+        }
+        let vc = OtherUserProfileViewController(userId: userId)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func reportPost() {

@@ -132,10 +132,24 @@ extension NotificationsViewController: NotificationLikeEventTableViewCellDelegat
 
 extension NotificationsViewController: NotificationFollowEventTableViewCellDelegate {
     func didTapFollowUnfollowButton(model: UserNotification) {
-        print("Tapped Button")
-        // perform database update
+        let targetUID = model.user.userId
         
+        switch model.type {
+        case .follow(let state):
+            switch state {
+            case .following:
+                DatabaseManager.shared.unfollowUser(targetUID: targetUID) { [weak self] success in
+                    guard success else { return }
+                    self?.fetchNotifications()
+                }
+            case .notFollowing:
+                DatabaseManager.shared.followUser(targetUID: targetUID) { [weak self] success in
+                    guard success else { return }
+                    self?.fetchNotifications()
+                }
+            }
+        default:
+            break
+        }
     }
-    
-    
 }

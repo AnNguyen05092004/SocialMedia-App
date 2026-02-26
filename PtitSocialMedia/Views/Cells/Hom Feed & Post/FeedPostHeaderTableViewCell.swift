@@ -93,6 +93,7 @@ import SDWebImage
 
 protocol FeedPostHeaderTableViewCellDelegate: AnyObject {
     func didTapMoreButton()
+    func didTapUsername(userId: String)
 }
 
 class FeedPostHeaderTableViewCell: UITableViewCell {
@@ -131,6 +132,14 @@ class FeedPostHeaderTableViewCell: UITableViewCell {
         contentView.addSubview(usernameLabel)
         contentView.addSubview(moreButton)
         moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile))
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.addGestureRecognizer(profileTap)
+        
+        let usernameTap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile))
+        usernameLabel.isUserInteractionEnabled = true
+        usernameLabel.addGestureRecognizer(usernameTap)
     }
     
     required init?(coder: NSCoder) {
@@ -141,10 +150,17 @@ class FeedPostHeaderTableViewCell: UITableViewCell {
         delegate?.didTapMoreButton()
     }
     
+    private var userId: String?
+    
+    @objc private func didTapProfile() {
+        guard let userId = userId else { return }
+        delegate?.didTapUsername(userId: userId)
+    }
+    
     public func configure(with model: User) {
+        self.userId = model.userId
         usernameLabel.text = model.name
         
-        // Nếu có ảnh từ URL, dùng SDWebImage để tải
         if let url = model.profilePhoto {
             profileImageView.sd_setImage(with: url, completed: nil)
         } else {

@@ -53,6 +53,7 @@
 		A1F84A6D2DEB1A7200E70D30 /* EditProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F84A6C2DEB1A7200E70D30 /* EditProfileModel.swift */; };
 		A1F84A6F2DEC4AC000E70D30 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F84A6E2DEC4AC000E70D30 /* UserModel.swift */; };
 		A1F84A712DEC867700E70D30 /* PostRenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F84A702DEC867700E70D30 /* PostRenderViewModel.swift */; };
+		C259520BCF7775899AD263A6 /* OtherUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4159067D8AF7C32F67EDD8B3 /* OtherUserProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		3DC9A5FDE2903FF3243FAB0E /* Pods-PtitSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.debug.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
+		4159067D8AF7C32F67EDD8B3 /* OtherUserProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OtherUserProfileViewController.swift; path = OtherUserProfileViewController.swift; sourceTree = "<group>"; };
 		7B30ECC4B1324572671565DF /* Pods-PtitSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PtitSocialMedia.release.xcconfig"; path = "Target Support Files/Pods-PtitSocialMedia/Pods-PtitSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
 		A10D7A5D2DE698E0009D8E5E /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		A12420182DACBC96009FFB6F /* FeedPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostTableViewCell.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				A14BB9A62D9645E1001B8B79 /* SearchViewController.swift */,
 				A14BB9AA2D9646A8001B8B79 /* PostEditorViewController.swift */,
 				A177F3462DCD101C001A6F98 /* CommentViewController.swift */,
+				4159067D8AF7C32F67EDD8B3 /* OtherUserProfileViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				A1F84A6F2DEC4AC000E70D30 /* UserModel.swift in Sources */,
 				A124201F2DACC0C7009FFB6F /* FeedPostHeaderTableViewCell.swift in Sources */,
 				A1535CCF2DF8784100A69D26 /* HomeFeedRenderViewModel.swift in Sources */,
+				C259520BCF7775899AD263A6 /* OtherUserProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -671,5 +671,304 @@ final class DatabaseManager {
                 completion(comments)
             }
     }
+
+    // MARK: - Follow / Unfollow
+    
+    func followUser(targetUID: String, completion: @escaping (Bool) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid, currentUID != targetUID else {
+            completion(false)
+            return
+        }
+        
+        let batch = db.batch()
+        let timestamp = Timestamp(date: Date())
+        
+        let followingRef = db.collection("users").document(currentUID).collection("following").document(targetUID)
+        batch.setData(["timestamp": timestamp, "uid": targetUID], forDocument: followingRef)
+        
+        let followersRef = db.collection("users").document(targetUID).collection("followers").document(currentUID)
+        batch.setData(["timestamp": timestamp, "uid": currentUID], forDocument: followersRef)
+        
+        batch.commit { error in
+            if error == nil {
+                self.addFollowNotification(targetUID: targetUID, fromUID: currentUID)
+            }
+            completion(error == nil)
+        }
+    }
+    
+    func unfollowUser(targetUID: String, completion: @escaping (Bool) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid, currentUID != targetUID else {
+            completion(false)
+            return
+        }
+        
+        let batch = db.batch()
+        
+        let followingRef = db.collection("users").document(currentUID).collection("following").document(targetUID)
+        batch.deleteDocument(followingRef)
+        
+        let followersRef = db.collection("users").document(targetUID).collection("followers").document(currentUID)
+        batch.deleteDocument(followersRef)
+        
+        batch.commit { error in
+            completion(error == nil)
+        }
+    }
+    
+    func checkFollowStatus(targetUID: String, completion: @escaping (Bool) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+        
+        db.collection("users").document(currentUID).collection("following").document(targetUID).getDocument { snapshot, _ in
+            completion(snapshot?.exists == true)
+        }
+    }
+    
+    private func addFollowNotification(targetUID: String, fromUID: String) {
+        let notificationID = UUID().uuidString
+        let notificationData: [String: Any] = [
+            "id": notificationID,
+            "type": "follow",
+            "fromUserId": fromUID,
+            "toUserId": targetUID,
+            "postId": "",
+            "timestamp": Timestamp(date: Date())
+        ]
+        db.collection("notifications").document(notificationID).setData(notificationData)
+    }
+    
+    // MARK: - Fetch Followers / Following Lists
+    
+    func fetchFollowersList(uid: String, completion: @escaping ([UserRelationship]) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+        
+        db.collection("users").document(uid).collection("followers").getDocuments { [weak self] snapshot, error in
+            guard let self = self, let documents = snapshot?.documents, error == nil else {
+                completion([])
+                return
+            }
+            
+            if documents.isEmpty {
+                completion([])
+                return
+            }
+            
+            var relationships: [UserRelationship] = []
+            let group = DispatchGroup()
+            
+            for doc in documents {
+                let followerUID = doc.documentID
+                group.enter()
+                
+                self.fetchUser(uid: followerUID) { user in
+                    self.db.collection("users").document(currentUID).collection("following").document(followerUID).getDocument { followSnapshot, _ in
+                        let isFollowing = followSnapshot?.exists == true
+                        let relationship = UserRelationship(
+                            userId: followerUID,
+                            name: user.name,
+                            username: "@\(user.username)",
+                            profilePhotoURL: user.profilePhoto,
+                            type: isFollowing ? .following : .notFollowing
+                        )
+                        relationships.append(relationship)
+                        group.leave()
+                    }
+                }
+            }
+            
+            group.notify(queue: .main) {
+                completion(relationships)
+            }
+        }
+    }
+    
+    func fetchFollowingList(uid: String, completion: @escaping ([UserRelationship]) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+        
+        db.collection("users").document(uid).collection("following").getDocuments { [weak self] snapshot, error in
+            guard let self = self, let documents = snapshot?.documents, error == nil else {
+                completion([])
+                return
+            }
+            
+            if documents.isEmpty {
+                completion([])
+                return
+            }
+            
+            var relationships: [UserRelationship] = []
+            let group = DispatchGroup()
+            
+            for doc in documents {
+                let followingUID = doc.documentID
+                group.enter()
+                
+                self.fetchUser(uid: followingUID) { user in
+                    if uid == currentUID {
+                        let relationship = UserRelationship(
+                            userId: followingUID,
+                            name: user.name,
+                            username: "@\(user.username)",
+                            profilePhotoURL: user.profilePhoto,
+                            type: .following
+                        )
+                        relationships.append(relationship)
+                        group.leave()
+                    } else {
+                        self.db.collection("users").document(currentUID).collection("following").document(followingUID).getDocument { followSnapshot, _ in
+                            let isFollowing = followSnapshot?.exists == true
+                            let relationship = UserRelationship(
+                                userId: followingUID,
+                                name: user.name,
+                                username: "@\(user.username)",
+                                profilePhotoURL: user.profilePhoto,
+                                type: isFollowing ? .following : .notFollowing
+                            )
+                            relationships.append(relationship)
+                            group.leave()
+                        }
+                    }
+                }
+            }
+            
+            group.notify(queue: .main) {
+                completion(relationships)
+            }
+        }
+    }
+    
+    // MARK: - User Search
+    
+    func searchUsers(query: String, completion: @escaping ([UserRelationship]) -> Void) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+        
+        let lowercasedQuery = query.lowercased()
+        let endQuery = lowercasedQuery + "\u{f8ff}"
+        
+        db.collection("users")
+            .whereField("username_lowercase", isGreaterThanOrEqualTo: lowercasedQuery)
+            .whereField("username_lowercase", isLessThanOrEqualTo: endQuery)
+            .limit(to: 20)
+            .getDocuments { [weak self] snapshot, error in
+                guard let self = self, let documents = snapshot?.documents, error == nil else {
+                    self?.searchUsersFallback(query: query, currentUID: currentUID, completion: completion)
+                    return
+                }
+                
+                if documents.isEmpty {
+                    self.searchUsersFallback(query: query, currentUID: currentUID, completion: completion)
+                    return
+                }
+                
+                var relationships: [UserRelationship] = []
+                let group = DispatchGroup()
+                
+                for doc in documents {
+                    let data = doc.data()
+                    let uid = doc.documentID
+                    
+                    if uid == currentUID { continue }
+                    
+                    group.enter()
+                    self.checkFollowStatus(targetUID: uid) { isFollowing in
+                        let relationship = UserRelationship(
+                            userId: uid,
+                            name: data["name"] as? String ?? "",
+                            username: "@\(data["username"] as? String ?? "")",
+                            profilePhotoURL: URL(string: data["profile_photo_url"] as? String ?? ""),
+                            type: isFollowing ? .following : .notFollowing
+                        )
+                        relationships.append(relationship)
+                        group.leave()
+                    }
+                }
+                
+                group.notify(queue: .main) {
+                    completion(relationships)
+                }
+            }
+    }
+    
+    private func searchUsersFallback(query: String, currentUID: String, completion: @escaping ([UserRelationship]) -> Void) {
+        let endQuery = query + "\u{f8ff}"
+        
+        db.collection("users")
+            .whereField("username", isGreaterThanOrEqualTo: query)
+            .whereField("username", isLessThanOrEqualTo: endQuery)
+            .limit(to: 20)
+            .getDocuments { [weak self] snapshot, error in
+                guard let self = self, let documents = snapshot?.documents, error == nil else {
+                    completion([])
+                    return
+                }
+                
+                var relationships: [UserRelationship] = []
+                let group = DispatchGroup()
+                
+                for doc in documents {
+                    let data = doc.data()
+                    let uid = doc.documentID
+                    
+                    if uid == currentUID { continue }
+                    
+                    group.enter()
+                    self.checkFollowStatus(targetUID: uid) { isFollowing in
+                        let relationship = UserRelationship(
+                            userId: uid,
+                            name: data["name"] as? String ?? "",
+                            username: "@\(data["username"] as? String ?? "")",
+                            profilePhotoURL: URL(string: data["profile_photo_url"] as? String ?? ""),
+                            type: isFollowing ? .following : .notFollowing
+                        )
+                        relationships.append(relationship)
+                        group.leave()
+                    }
+                }
+                
+                group.notify(queue: .main) {
+                    completion(relationships)
+                }
+            }
+    }
+    
+    // MARK: - Delete Post
+    
+    func deletePost(postID: String, completion: @escaping (Bool) -> Void) {
+        let postRef = db.collection("posts").document(postID)
+        
+        let group = DispatchGroup()
+        
+        group.enter()
+        postRef.collection("likes").getDocuments { snapshot, _ in
+            let batch = self.db.batch()
+            snapshot?.documents.forEach { batch.deleteDocument($0.reference) }
+            batch.commit { _ in group.leave() }
+        }
+        
+        group.enter()
+        postRef.collection("comments").getDocuments { snapshot, _ in
+            let batch = self.db.batch()
+            snapshot?.documents.forEach { batch.deleteDocument($0.reference) }
+            batch.commit { _ in group.leave() }
+        }
+        
+        group.notify(queue: .main) {
+            postRef.delete { error in
+                completion(error == nil)
+            }
+        }
+    }
 }
 

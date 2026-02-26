@@ -183,25 +183,35 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelete {
 
     
     func frofileHeaderDidTapFollowersButton(_ header: ProfileInfoHeaderCollectionReusableView) {
-        var mockData = [UserRelationship]()
-        for x in 0..<10 {
-            mockData.append(UserRelationship(name: "An", username: "@An", type: x%2==0 ? .following : .notFollowing))
+        guard let user = currentUser else { return }
+        
+        let loadingAlert = UIAlertController(title: nil, message: "Loading...", preferredStyle: .alert)
+        present(loadingAlert, animated: true)
+        
+        DatabaseManager.shared.fetchFollowersList(uid: user.userId) { [weak self] data in
+            loadingAlert.dismiss(animated: true) {
+                let vc = ListViewController(data: data)
+                vc.title = "Followers"
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
         }
-        let vc = ListViewController(data: mockData)
-        vc.title = "Followers"
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     func frofileHeaderDidTapFollowingButton(_ header: ProfileInfoHeaderCollectionReusableView) {
-        var mockData = [UserRelationship]()
-        for x in 0..<10 {
-            mockData.append(UserRelationship(name: "An", username: "@An", type: x%2==0 ? .following : .notFollowing))
+        guard let user = currentUser else { return }
+        
+        let loadingAlert = UIAlertController(title: nil, message: "Loading...", preferredStyle: .alert)
+        present(loadingAlert, animated: true)
+        
+        DatabaseManager.shared.fetchFollowingList(uid: user.userId) { [weak self] data in
+            loadingAlert.dismiss(animated: true) {
+                let vc = ListViewController(data: data)
+                vc.title = "Following"
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
         }
-        let vc = ListViewController(data: mockData)
-        vc.title = "Following"
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     func frofileHeaderDidTapEditProfileButton(_ header: ProfileInfoHeaderCollectionReusableView) {

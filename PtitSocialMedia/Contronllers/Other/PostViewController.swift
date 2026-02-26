@@ -204,6 +204,15 @@ extension PostViewController: FeedPostHeaderTableViewCellDelegate {
         present(actionSheet, animated: true)
     }
     
+    func didTapUsername(userId: String) {
+        guard let currentUID = Auth.auth().currentUser?.uid, userId != currentUID else {
+            return
+        }
+        let vc = OtherUserProfileViewController(userId: userId)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func reportPost() {
         // TODO: implement report
     }

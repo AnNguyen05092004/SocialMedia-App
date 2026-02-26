@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol UserFollowTableViewCellDelete: AnyObject {
     func didTapFollowUnfollowButton(model: UserRelationship)
@@ -17,9 +18,11 @@ enum FollowState {
 }
 
 struct UserRelationship {
+    let userId: String
     let name: String
     let username: String
-    let type: FollowState
+    let profilePhotoURL: URL?
+    var type: FollowState
 }
 
 class UserFollowTableViewCell: UITableViewCell {
@@ -85,6 +88,14 @@ class UserFollowTableViewCell: UITableViewCell {
         self.model = model
         nameLabel.text = model.name
         usernameLabel.text = model.username
+        
+        // Load profile photo
+        if let url = model.profilePhotoURL {
+            profileImageView.sd_setImage(with: url, completed: nil)
+        } else {
+            profileImageView.image = UIImage(systemName: "person.circle")
+        }
+        
         switch model.type {
             case .following:
                 followButton.setTitle("Unfollow", for: .normal)
